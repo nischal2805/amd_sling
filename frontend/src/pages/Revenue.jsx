@@ -18,6 +18,10 @@ function formatMoney(n) {
   return '$' + Number(n).toLocaleString('en-US');
 }
 
+function formatSourceType(s) {
+  return (s ?? '').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 const SOURCE_TYPES = ['sponsorship', 'affiliate', 'ad_revenue', 'licensing', 'other'];
 
 const SOURCE_BADGE_COLORS = {
@@ -94,7 +98,7 @@ function AddRevenueForm({ brands, deals, onSave }) {
             className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-blue-600 focus:border-blue-600"
           >
             {SOURCE_TYPES.map((s) => (
-              <option key={s} value={s}>{s.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+              <option key={s} value={s}>{formatSourceType(s)}</option>
             ))}
           </select>
         </div>
@@ -225,7 +229,7 @@ export default function Revenue() {
                   SOURCE_BADGE_COLORS[type] ?? 'bg-gray-100 text-gray-600'
                 }`}
               >
-                {type.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                {formatSourceType(type)}
                 <span className="font-semibold">{formatMoney(amount)}</span>
               </span>
             ))}
@@ -305,7 +309,7 @@ export default function Revenue() {
                         SOURCE_BADGE_COLORS[entry.source_type] ?? 'bg-gray-100 text-gray-600'
                       }`}
                     >
-                      {(entry.source_type ?? '').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
+                      {formatSourceType(entry.source_type)}
                     </span>
                   </td>
                   <td className="px-5 py-3 text-gray-600">{entry.platform ?? '—'}</td>
