@@ -11,7 +11,13 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (res) => res,
+  (res) => {
+    // Auto-unwrap { data: ... } envelope from all API responses
+    if (res.data && typeof res.data === 'object' && 'data' in res.data) {
+      res.data = res.data.data;
+    }
+    return res;
+  },
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');

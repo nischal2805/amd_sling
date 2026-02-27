@@ -34,7 +34,7 @@ function BrandDealsRow({ brand }) {
     enabled: expanded,
   });
 
-  const deals = Array.isArray(dealsData) ? dealsData : dealsData?.deals ?? [];
+  const deals = Array.isArray(dealsData) ? dealsData : [];
 
   return (
     <>
@@ -114,7 +114,7 @@ export default function Brands() {
     queryFn: () => api.get('/api/brands').then((r) => r.data),
   });
 
-  const brands = Array.isArray(brandsData) ? brandsData : brandsData?.brands ?? [];
+  const brands = Array.isArray(brandsData) ? brandsData : [];
 
   if (isLoading) {
     return (

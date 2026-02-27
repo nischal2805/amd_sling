@@ -6,12 +6,13 @@ router.get('/', async (req, res, next) => {
   try {
     const where = { user_id: req.user.id };
     if (req.query.stage) where.stage = req.query.stage;
+    if (req.query.brand_id) where.brand_id = req.query.brand_id;
 
     const deals = await Deal.findAll({
       where,
       include: [
-        { model: Brand, attributes: ['id', 'name'] },
-        { model: Deliverable },
+        { model: Brand, as: 'brand', attributes: ['id', 'name'] },
+        { model: Deliverable, as: 'deliverables' },
       ],
       order: [['created_at', 'DESC']],
     });
@@ -50,7 +51,7 @@ router.get('/:id', async (req, res, next) => {
   try {
     const deal = await Deal.findOne({
       where: { id: req.params.id, user_id: req.user.id },
-      include: [{ model: Brand }, { model: Deliverable }],
+      include: [{ model: Brand, as: 'brand' }, { model: Deliverable, as: 'deliverables' }],
     });
     if (!deal) return res.status(404).json({ error: 'Deal not found' });
     res.json({ data: deal });

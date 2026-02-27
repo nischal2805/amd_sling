@@ -193,15 +193,10 @@ export default function Revenue() {
     },
   });
 
-  const entries = Array.isArray(revenueEntries)
-    ? revenueEntries
-    : revenueEntries?.entries ?? [];
-
-  const brands = Array.isArray(brandsData) ? brandsData : brandsData?.brands ?? [];
-  const deals = Array.isArray(dealsData) ? dealsData : dealsData?.deals ?? [];
-  const chartData = Array.isArray(revenueAnalytics)
-    ? revenueAnalytics
-    : revenueAnalytics?.monthly ?? [];
+  const entries = Array.isArray(revenueEntries) ? revenueEntries : [];
+  const brands = Array.isArray(brandsData) ? brandsData : [];
+  const deals = Array.isArray(dealsData) ? dealsData : [];
+  const chartData = Array.isArray(revenueAnalytics) ? revenueAnalytics : [];
 
   const totalRevenue = entries.reduce((s, e) => s + Number(e.amount || 0), 0);
 
@@ -257,7 +252,7 @@ export default function Revenue() {
                 formatter={(value) => [formatMoney(value), 'Revenue']}
                 contentStyle={{ fontSize: 12, borderColor: '#e5e7eb' }}
               />
-              <Bar dataKey="revenue" fill="#2563eb" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="total" fill="#2563eb" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}

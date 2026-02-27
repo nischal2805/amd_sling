@@ -231,8 +231,8 @@ export default function Pipeline() {
     return <div className="text-red-500 text-sm">Failed to load deals.</div>;
   }
 
-  const deals = Array.isArray(dealsData) ? dealsData : dealsData?.deals ?? [];
-  const brands = Array.isArray(brandsData) ? brandsData : brandsData?.brands ?? [];
+  const deals = Array.isArray(dealsData) ? dealsData : [];
+  const brands = Array.isArray(brandsData) ? brandsData : [];
 
   const grouped = STAGES.reduce((acc, s) => {
     acc[s.key] = deals.filter((d) => d.stage === s.key);

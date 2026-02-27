@@ -220,7 +220,7 @@ export default function DealDetail() {
 
   const deliverableMutation = useMutation({
     mutationFn: ({ deliverableId, status }) =>
-      api.patch(`/api/deals/${id}/deliverables/${deliverableId}`, { status }),
+      api.patch(`/api/deliverables/${deliverableId}/status`, { status }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['deal', id] }),
   });
 

@@ -7,8 +7,8 @@ router.get('/', async (req, res, next) => {
     const invoices = await Invoice.findAll({
       where: { user_id: req.user.id },
       include: [
-        { model: Brand, attributes: ['id', 'name'] },
-        { model: Deal, attributes: ['id', 'title'] },
+        { model: Brand, as: 'brand', attributes: ['id', 'name'] },
+        { model: Deal, as: 'deal', attributes: ['id', 'title'] },
       ],
       order: [['created_at', 'DESC']],
     });
@@ -51,8 +51,8 @@ router.get('/:id', async (req, res, next) => {
     const invoice = await Invoice.findOne({
       where: { id: req.params.id, user_id: req.user.id },
       include: [
-        { model: Brand },
-        { model: Deal, attributes: ['id', 'title'] },
+        { model: Brand, as: 'brand' },
+        { model: Deal, as: 'deal', attributes: ['id', 'title'] },
       ],
     });
     if (!invoice) return res.status(404).json({ error: 'Invoice not found' });

@@ -8,19 +8,36 @@ router.get('/dashboard', async (req, res, next) => {
     const userId = req.user.id;
 
     const [deals, revenues, invoices] = await Promise.all([
-      Deal.findAll({ where: { user_id: userId }, include: [Brand] }),
+      Deal.findAll({ where: { user_id: userId }, include: [{ model: Brand, as: 'brand' }] }),
       Revenue.findAll({ where: { user_id: userId } }),
       Invoice.findAll({ where: { user_id: userId } }),
     ]);
+
+    const now = new Date();
+    const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    const revenueThisMonth = revenues
+      .filter((r) => new Date(r.received_at) >= thisMonthStart)
+      .reduce((s, r) => s + parseFloat(r.amount), 0);
+
+    const revenueLastMonth = revenues
+      .filter((r) => {
+        const d = new Date(r.received_at);
+        return d >= lastMonthStart && d < thisMonthStart;
+      })
+      .reduce((s, r) => s + parseFloat(r.amount), 0);
 
     const totalRevenue = revenues.reduce((s, r) => s + parseFloat(r.amount), 0);
     const activeDeals = deals.filter((d) => !['completed', 'cancelled'].includes(d.stage)).length;
     const pipelineValue = deals
       .filter((d) => !['completed', 'cancelled'].includes(d.stage))
       .reduce((s, d) => s + parseFloat(d.value || 0), 0);
-    const pendingInvoices = invoices
+
+    const outstandingInvoices = invoices
       .filter((i) => ['sent', 'overdue'].includes(i.status))
       .reduce((s, i) => s + parseFloat(i.amount), 0);
+    const overdueCount = invoices.filter((i) => i.status === 'overdue').length;
 
     // Revenue last 6 months
     const sixMonthsAgo = new Date();
@@ -39,10 +56,13 @@ router.get('/dashboard', async (req, res, next) => {
 
     res.json({
       data: {
+        revenue_this_month: revenueThisMonth,
+        revenue_last_month: revenueLastMonth,
         total_revenue: totalRevenue,
         active_deals: activeDeals,
         pipeline_value: pipelineValue,
-        pending_invoices: pendingInvoices,
+        outstanding_invoices: outstandingInvoices,
+        overdue_count: overdueCount,
         revenue_by_month: revenueByMonth,
         deals_by_stage: dealsByStage,
       },
@@ -57,7 +77,7 @@ router.get('/pipeline', async (req, res, next) => {
   try {
     const deals = await Deal.findAll({
       where: { user_id: req.user.id },
-      include: [{ model: Brand, attributes: ['id', 'name'] }],
+      include: [{ model: Brand, as: 'brand', attributes: ['id', 'name'] }],
     });
 
     const stages = ['inbound', 'negotiation', 'contract_sent', 'in_production', 'completed', 'cancelled'];
@@ -81,12 +101,12 @@ router.get('/brands', async (req, res, next) => {
   try {
     const revenues = await Revenue.findAll({
       where: { user_id: req.user.id },
-      include: [{ model: Brand, attributes: ['id', 'name'] }],
+      include: [{ model: Brand, as: 'brand', attributes: ['id', 'name'] }],
     });
 
     const byBrand = {};
     revenues.forEach((r) => {
-      const key = r.Brand ? r.Brand.name : 'Unknown';
+      const key = r.brand ? r.brand.name : 'Unknown';
       byBrand[key] = (byBrand[key] || 0) + parseFloat(r.amount);
     });
 

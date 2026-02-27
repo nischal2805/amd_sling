@@ -7,7 +7,7 @@ router.get('/summary', async (req, res, next) => {
   try {
     const entries = await Revenue.findAll({
       where: { user_id: req.user.id },
-      include: [{ model: Brand, attributes: ['id', 'name'] }],
+      include: [{ model: Brand, as: 'brand', attributes: ['id', 'name'] }],
     });
 
     const total = entries.reduce((sum, r) => sum + parseFloat(r.amount), 0);
@@ -36,8 +36,8 @@ router.get('/summary', async (req, res, next) => {
     // by_brand
     const by_brand = {};
     entries.forEach((r) => {
-      if (r.Brand) {
-        by_brand[r.Brand.name] = (by_brand[r.Brand.name] || 0) + parseFloat(r.amount);
+      if (r.brand) {
+        by_brand[r.brand.name] = (by_brand[r.brand.name] || 0) + parseFloat(r.amount);
       }
     });
 
@@ -60,8 +60,8 @@ router.get('/', async (req, res, next) => {
     const entries = await Revenue.findAll({
       where,
       include: [
-        { model: Brand, attributes: ['id', 'name'] },
-        { model: Deal, attributes: ['id', 'title'] },
+        { model: Brand, as: 'brand', attributes: ['id', 'name'] },
+        { model: Deal, as: 'deal', attributes: ['id', 'title'] },
       ],
       order: [['received_at', 'DESC']],
     });

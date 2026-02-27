@@ -44,8 +44,8 @@ router.post('/', async (req, res, next) => {
 // PUT /:id — update deliverable
 router.put('/:id', async (req, res, next) => {
   try {
-    const deliverable = await Deliverable.findByPk(req.params.id, { include: [Deal] });
-    if (!deliverable || deliverable.Deal.user_id !== req.user.id) {
+    const deliverable = await Deliverable.findByPk(req.params.id, { include: [{ model: Deal, as: 'deal' }] });
+    if (!deliverable || deliverable.deal.user_id !== req.user.id) {
       return res.status(404).json({ error: 'Deliverable not found' });
     }
 
@@ -60,8 +60,8 @@ router.put('/:id', async (req, res, next) => {
 // PATCH /:id/status — update status only
 router.patch('/:id/status', async (req, res, next) => {
   try {
-    const deliverable = await Deliverable.findByPk(req.params.id, { include: [Deal] });
-    if (!deliverable || deliverable.Deal.user_id !== req.user.id) {
+    const deliverable = await Deliverable.findByPk(req.params.id, { include: [{ model: Deal, as: 'deal' }] });
+    if (!deliverable || deliverable.deal.user_id !== req.user.id) {
       return res.status(404).json({ error: 'Deliverable not found' });
     }
 
@@ -78,8 +78,8 @@ router.patch('/:id/status', async (req, res, next) => {
 // DELETE /:id — delete deliverable
 router.delete('/:id', async (req, res, next) => {
   try {
-    const deliverable = await Deliverable.findByPk(req.params.id, { include: [Deal] });
-    if (!deliverable || deliverable.Deal.user_id !== req.user.id) {
+    const deliverable = await Deliverable.findByPk(req.params.id, { include: [{ model: Deal, as: 'deal' }] });
+    if (!deliverable || deliverable.deal.user_id !== req.user.id) {
       return res.status(404).json({ error: 'Deliverable not found' });
     }
 

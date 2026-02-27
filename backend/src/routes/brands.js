@@ -8,20 +8,20 @@ router.get('/', async (req, res, next) => {
     const brands = await Brand.findAll({
       where: { user_id: req.user.id },
       include: [
-        { model: Deal, attributes: ['id'] },
-        { model: Revenue, attributes: ['amount'] },
+        { model: Deal, as: 'deals', attributes: ['id'] },
+        { model: Revenue, as: 'revenues', attributes: ['amount'] },
       ],
       order: [['created_at', 'DESC']],
     });
 
     const data = brands.map((b) => {
       const obj = b.toJSON();
-      obj.deal_count = obj.Deals ? obj.Deals.length : 0;
-      obj.total_revenue = obj.Revenues
-        ? obj.Revenues.reduce((sum, r) => sum + parseFloat(r.amount || 0), 0)
+      obj.deal_count = obj.deals ? obj.deals.length : 0;
+      obj.total_revenue = obj.revenues
+        ? obj.revenues.reduce((sum, r) => sum + parseFloat(r.amount || 0), 0)
         : 0;
-      delete obj.Deals;
-      delete obj.Revenues;
+      delete obj.deals;
+      delete obj.revenues;
       return obj;
     });
 
@@ -57,7 +57,7 @@ router.get('/:id', async (req, res, next) => {
   try {
     const brand = await Brand.findOne({
       where: { id: req.params.id, user_id: req.user.id },
-      include: [{ model: Deal }],
+      include: [{ model: Deal, as: 'deals' }],
     });
     if (!brand) return res.status(404).json({ error: 'Brand not found' });
     res.json({ data: brand });

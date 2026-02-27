@@ -70,12 +70,10 @@ export default function Dashboard() {
     );
   }
 
-  const deals = Array.isArray(dealsData) ? dealsData : dealsData?.deals ?? [];
+  const deals = Array.isArray(dealsData) ? dealsData : [];
   const recentDeals = deals.slice(0, 5);
 
-  const chartData = Array.isArray(revenueData)
-    ? revenueData
-    : revenueData?.monthly ?? [];
+  const chartData = Array.isArray(revenueData) ? revenueData : [];
 
   return (
     <div className="space-y-6">
@@ -96,7 +94,7 @@ export default function Dashboard() {
         <StatCard
           label="Outstanding Invoices"
           value={formatMoney(dashboard?.outstanding_invoices)}
-          color="text-amber-500"
+          color={dashboard?.overdue_count > 0 ? 'text-red-500' : 'text-amber-500'}
         />
       </div>
 
@@ -129,7 +127,7 @@ export default function Dashboard() {
                 formatter={(value) => [formatMoney(value), 'Revenue']}
                 contentStyle={{ fontSize: 12, borderColor: '#e5e7eb' }}
               />
-              <Bar dataKey="revenue" fill="#2563eb" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="total" fill="#2563eb" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}
