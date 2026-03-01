@@ -81,7 +81,6 @@ export const draftResponse = (data) => api.post('/ai/draft-response', data).then
 export const repurposeContent = (data) => api.post('/ai/repurpose', data).then(r => r.data)
 export const generateBrief = (data) => api.post('/ai/generate-brief', data).then(r => r.data)
 export const negotiationCoach = (data) => api.post('/ai/negotiation-coach', data).then(r => r.data)
-export const creatorAnalysis = (data) => api.post('/ai/creator-analysis', data).then(r => r.data)
 
 // Negotiation Notes
 export const getNegotiationNotes = (params) => api.get('/negotiations', { params }).then(r => r.data)
@@ -104,20 +103,5 @@ export const getGmailStatus = () => api.get('/gmail/status').then(r => r.data)
 export const scanGmail = () => api.post('/gmail/scan').then(r => r.data)
 export const getGmailConnectUrl = () => api.get('/gmail/connect').then(r => r.data)
 export const getPlatformAuthUrl = (platform) => api.get(`/connections/${platform}/auth`).then(r => r.data)
-
-// Team
-export const getTeam = () => api.get('/team').then(r => r.data)
-export const createTeamMember = (data) => api.post('/team', data).then(r => r.data)
-export const updateTeamMember = (id, data) => api.put(`/team/${id}`, data).then(r => r.data)
-export const deleteTeamMember = (id) => api.delete(`/team/${id}`).then(r => r.data)
-
-// Tickets
-export const getTickets = (params) => api.get('/tickets', { params }).then(r => r.data)
-export const getTicketsDashboard = () => api.get('/tickets/dashboard').then(r => r.data)
-export const createTicket = (data) => api.post('/tickets', data).then(r => r.data)
-export const updateTicket = (id, data) => api.put(`/tickets/${id}`, data).then(r => r.data)
-export const updateTicketStatus = (id, status) => api.patch(`/tickets/${id}/status`, { status }).then(r => r.data)
-export const assignTicket = (id, assigned_to) => api.patch(`/tickets/${id}/assign`, { assigned_to }).then(r => r.data)
-export const deleteTicket = (id) => api.delete(`/tickets/${id}`).then(r => r.data)
 
 export default api

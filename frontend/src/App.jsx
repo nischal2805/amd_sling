@@ -14,6 +14,7 @@ import Connections from './pages/Connections'
 import CreatorAI from './pages/CreatorAI'
 import Team from './pages/Team'
 import Tickets from './pages/Tickets'
+import Upload from './pages/Upload'
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token')
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="creator-ai" element={<CreatorAI />} />
         <Route path="team" element={<Team />} />
         <Route path="tickets" element={<Tickets />} />
+        <Route path="upload" element={<Upload />} />
       </Route>
     </Routes>
   )

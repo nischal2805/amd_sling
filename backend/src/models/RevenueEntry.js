@@ -24,7 +24,7 @@ const RevenueEntry = sequelize.define('RevenueEntry', {
   },
   currency: {
     type: DataTypes.STRING(3),
-    defaultValue: 'INR'
+    defaultValue: 'USD'
   },
   date: {
     type: DataTypes.DATEONLY,

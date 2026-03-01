@@ -13,6 +13,7 @@ const navItems = [
   { to: '/creator-ai', label: 'Creator AI', icon: '✦' },
   { to: '/team', label: 'Team', icon: '◫' },
   { to: '/tickets', label: 'Tickets', icon: '☰' },
+  { to: '/upload', label: 'Upload', icon: '⬆' },
 ]
 
 export default function Layout() {
