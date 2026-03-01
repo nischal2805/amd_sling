@@ -10,6 +10,8 @@ const ContentPost = require('./ContentPost');
 const PostPlatform = require('./PostPlatform');
 const AiInteraction = require('./AiInteraction');
 const NegotiationNote = require('./NegotiationNote');
+const TeamMember = require('./TeamMember');
+const Ticket = require('./Ticket');
 
 // User associations
 User.hasMany(Brand, { foreignKey: 'user_id', as: 'brands' });
@@ -69,6 +71,18 @@ Brand.hasMany(NegotiationNote, { foreignKey: 'brand_id', as: 'negotiation_notes'
 Deal.hasMany(NegotiationNote, { foreignKey: 'deal_id', as: 'negotiation_notes' });
 User.hasMany(NegotiationNote, { foreignKey: 'user_id', as: 'negotiation_notes' });
 
+// TeamMember associations
+TeamMember.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(TeamMember, { foreignKey: 'user_id', as: 'team_members' });
+
+// Ticket associations
+Ticket.belongsTo(User, { foreignKey: 'user_id' });
+Ticket.belongsTo(TeamMember, { foreignKey: 'assigned_to', as: 'assignee' });
+Ticket.belongsTo(Deal, { foreignKey: 'deal_id', as: 'deal' });
+User.hasMany(Ticket, { foreignKey: 'user_id', as: 'tickets' });
+TeamMember.hasMany(Ticket, { foreignKey: 'assigned_to', as: 'tickets' });
+Deal.hasMany(Ticket, { foreignKey: 'deal_id', as: 'tickets' });
+
 module.exports = {
   sequelize,
   User,
@@ -81,5 +95,7 @@ module.exports = {
   ContentPost,
   PostPlatform,
   AiInteraction,
-  NegotiationNote
+  NegotiationNote,
+  TeamMember,
+  Ticket
 };

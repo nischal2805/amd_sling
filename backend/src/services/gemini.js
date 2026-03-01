@@ -12,7 +12,7 @@ function extractJSON(text) {
     // Try to find JSON object in text
     const match = text.match(/\{[\s\S]*\}/);
     if (match) {
-      try { return JSON.parse(match[0]); } catch {}
+      try { return JSON.parse(match[0]); } catch { }
     }
     return null;
   }
@@ -179,4 +179,88 @@ Return ONLY valid JSON:
   return parsed || { error: 'parse_failed', raw: text };
 }
 
-module.exports = { parseEmailForDeal, suggestRate, draftResponse, repurposeContent, generateBrief, negotiationCoach };
+// 7. Creator AI — analyze past content style and generate video script, captions, hashtags
+async function creatorAnalysis(context) {
+  const model = getModel();
+
+  // Build past content context string
+  let pastContentBlock = 'No previous content found — use general best practices.';
+  if (context.pastContent && context.pastContent.length > 0) {
+    pastContentBlock = context.pastContent.map((p, i) =>
+      `Post ${i + 1}: Title: "${p.title || 'Untitled'}" | Body: "${(p.body || '').slice(0, 300)}" | YouTube desc: "${(p.youtube_description || '').slice(0, 200)}" | Instagram caption: "${(p.instagram_caption || '').slice(0, 200)}" | LinkedIn: "${(p.linkedin_text || '').slice(0, 200)}" | Tags: "${p.youtube_tags || ''}" | Twitter: "${(p.twitter_text || '').slice(0, 200)}"`
+    ).join('\n');
+  }
+
+  const result = await model.generateContent(`You are an expert content strategist for video creators. Your job is to:
+1. Analyze the creator's PAST CONTENT to understand their unique style, tone, vocabulary, and content patterns
+2. Based on that style analysis, generate a video script, captions, and hashtags for their NEW video idea
+
+=== CREATOR'S PAST CONTENT (analyze this for their style) ===
+${pastContentBlock}
+
+=== NEW VIDEO IDEA ===
+- Video Title: ${context.videoTitle}
+- Video Description/Concept: ${context.videoDescription}
+- Target Platform: ${context.platform || 'YouTube'}
+
+=== INSTRUCTIONS ===
+Carefully analyze the past content above. Look for patterns in:
+- Tone (casual, professional, humorous, educational)
+- Vocabulary and phrases they commonly use
+- Content structure and format preferences
+- How they engage their audience
+
+Then create a script and captions that MATCH this creator's existing style. The output should feel like the creator wrote it themselves.
+
+Return ONLY valid JSON in this exact format:
+{
+  "style_analysis": {
+    "tone": string (the creator's detected tone),
+    "vocabulary": string (their vocabulary style),
+    "content_pattern": string (how they typically structure content),
+    "signature_elements": [string, string, string] (3 distinctive elements of their style)
+  },
+  "script": {
+    "hook": string (attention-grabbing opening 5-10 seconds, in the creator's voice),
+    "intro": string (brief intro setting up the video topic, 15-30 seconds),
+    "sections": [
+      {
+        "heading": string (section title/topic),
+        "talking_points": string (what to say, written in creator's voice, 2-4 sentences),
+        "visual_notes": string (what to show on screen during this section)
+      },
+      {
+        "heading": string,
+        "talking_points": string,
+        "visual_notes": string
+      },
+      {
+        "heading": string,
+        "talking_points": string,
+        "visual_notes": string
+      }
+    ],
+    "cta": string (call to action in creator's voice),
+    "outro": string (closing line in creator's voice),
+    "estimated_duration": string (e.g. "8-10 minutes")
+  },
+  "captions": {
+    "youtube_description": string (SEO-optimized YouTube description, include timestamps placeholder),
+    "instagram_caption": string (engaging Instagram caption with line breaks),
+    "linkedin_text": string (professional LinkedIn post text),
+    "twitter_text": string (concise tweet, under 280 chars)
+  },
+  "hashtags": {
+    "primary": [string, string, string, string, string] (5 most relevant hashtags),
+    "secondary": [string, string, string, string, string] (5 additional reach hashtags),
+    "niche": [string, string, string] (3 niche-specific hashtags)
+  },
+  "thumbnail_suggestion": string (what would make a great thumbnail for this video)
+}`);
+
+  const text = result.response.text();
+  const parsed = extractJSON(text);
+  return parsed || { error: 'parse_failed', raw: text };
+}
+
+module.exports = { parseEmailForDeal, suggestRate, draftResponse, repurposeContent, generateBrief, negotiationCoach, creatorAnalysis };

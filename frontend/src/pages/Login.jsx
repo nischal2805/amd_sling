@@ -51,7 +51,7 @@ export default function Login() {
     <div className="min-h-screen bg-navy-800 flex items-center justify-center">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-white">CreatorOS</h1>
+          <h1 className="text-2xl font-semibold text-white">BuzzStack</h1>
           <p className="text-teal-300 text-sm mt-1">Sponsorship CRM for creators</p>
         </div>
 

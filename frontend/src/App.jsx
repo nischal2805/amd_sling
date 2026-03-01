@@ -11,6 +11,9 @@ import BusinessHealth from './pages/BusinessHealth'
 import Compose from './pages/Compose'
 import Calendar from './pages/Calendar'
 import Connections from './pages/Connections'
+import CreatorAI from './pages/CreatorAI'
+import Team from './pages/Team'
+import Tickets from './pages/Tickets'
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token')
@@ -33,6 +36,9 @@ export default function App() {
         <Route path="compose" element={<Compose />} />
         <Route path="calendar" element={<Calendar />} />
         <Route path="connections" element={<Connections />} />
+        <Route path="creator-ai" element={<CreatorAI />} />
+        <Route path="team" element={<Team />} />
+        <Route path="tickets" element={<Tickets />} />
       </Route>
     </Routes>
   )

@@ -1,7 +1,7 @@
 {
-  "name": "creatoros-backend",
+  "name": "buzzstack-backend",
   "version": "1.0.0",
-  "description": "CreatorOS Backend API",
+  "description": "BuzzStack Backend API",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -10,9 +10,11 @@
     "seed": "node src/database/seed.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@google/generative-ai": "^0.21.0",
     "axios": "^1.6.0",
     "bcryptjs": "^2.4.3",
+    "cheerio": "^1.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

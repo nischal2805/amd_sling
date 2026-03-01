@@ -136,4 +136,63 @@ router.post('/negotiation-coach', auth, async (req, res, next) => {
   }
 });
 
+// POST /api/ai/creator-analysis
+router.post('/creator-analysis', auth, async (req, res, next) => {
+  try {
+    const { video_title, video_description, platform, profile_url } = req.body;
+    if (!video_title) return res.status(400).json({ error: 'video_title required' });
+
+    let pastContent = [];
+
+    // If a profile URL is provided, scrape it for content style
+    if (profile_url && profile_url.trim()) {
+      try {
+        const { scrapeCreatorContent } = require('../services/scraper');
+        const scraped = await scrapeCreatorContent(profile_url);
+        pastContent = scraped.map(item => ({
+          title: item.title || '',
+          body: item.description || '',
+          youtube_description: item.platform === 'YouTube' ? item.description : '',
+          instagram_caption: item.platform === 'Instagram' ? item.description : '',
+          youtube_tags: '',
+          linkedin_text: '',
+          twitter_text: ''
+        }));
+      } catch (scrapeErr) {
+        // Return the scrape error as a warning but still proceed
+        console.error('Scrape error:', scrapeErr.message);
+        return res.status(400).json({ error: scrapeErr.message });
+      }
+    } else {
+      // Fallback: use existing content posts from database
+      const { ContentPost } = require('../models');
+      const pastPosts = await ContentPost.findAll({
+        where: { user_id: req.user.id },
+        order: [['created_at', 'DESC']],
+        limit: 15,
+        attributes: ['title', 'body', 'youtube_description', 'youtube_tags', 'instagram_caption', 'linkedin_text', 'twitter_text']
+      });
+      pastContent = pastPosts.map(p => p.toJSON());
+    }
+
+    const result = await ai.creatorAnalysis({
+      videoTitle: video_title,
+      videoDescription: video_description || '',
+      platform: platform || 'YouTube',
+      pastContent
+    });
+
+    await AiInteraction.create({
+      user_id: req.user.id,
+      type: 'creator_analysis',
+      input_summary: `Script for: ${video_title}`.slice(0, 200),
+      output_text: JSON.stringify(result)
+    });
+
+    res.json(result);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router;

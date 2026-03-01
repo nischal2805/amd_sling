@@ -190,7 +190,7 @@ export default function Connections() {
       <div className="mt-5 bg-cyan-50 border border-cyan-200 rounded-lg p-4">
         <h4 className="text-sm font-medium text-navy-700 mb-1">How connections work</h4>
         <ul className="text-xs text-navy-500 space-y-1 list-disc list-inside">
-          <li>Connecting Gmail lets CreatorOS scan for sponsorship inquiries and auto-populate the pipeline</li>
+          <li>Connecting Gmail lets BuzzStack scan for sponsorship inquiries and auto-populate the pipeline</li>
           <li>Connecting YouTube, Instagram, LinkedIn, or Twitter lets you publish content directly from Compose</li>
           <li>OAuth tokens are stored securely and never shared</li>
           <li>You can disconnect any account at any time</li>

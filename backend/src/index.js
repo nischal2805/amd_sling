@@ -14,6 +14,8 @@ const connectionRoutes = require('./routes/connections');
 const postRoutes = require('./routes/posts');
 const aiRoutes = require('./routes/ai');
 const negotiationRoutes = require('./routes/negotiations');
+const teamRoutes = require('./routes/team');
+const ticketRoutes = require('./routes/tickets');
 
 const { sequelize } = require('./models');
 const { startScheduler } = require('./jobs/publishScheduler');
@@ -41,6 +43,8 @@ app.use('/api/connections', connectionRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/negotiations', negotiationRoutes);
+app.use('/api/team', teamRoutes);
+app.use('/api/tickets', ticketRoutes);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
@@ -70,7 +74,7 @@ async function start() {
     console.log('Database tables synced');
     startScheduler();
     app.listen(PORT, () => {
-      console.log(`CreatorOS backend running on port ${PORT}`);
+      console.log(`BuzzStack backend running on port ${PORT}`);
     });
   } catch (err) {
     console.error('Failed to start server:', err);
