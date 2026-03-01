@@ -5,15 +5,15 @@ const STATUSES = ['todo', 'in_progress', 'review', 'done']
 const STATUS_LABELS = { todo: 'To Do', in_progress: 'In Progress', review: 'Review', done: 'Done' }
 const STATUS_COLORS = {
     todo: 'bg-sand-100 text-navy-600 border-sand-200',
-    in_progress: 'bg-blue-100 text-blue-700 border-blue-200',
-    review: 'bg-amber-100 text-amber-700 border-amber-200',
-    done: 'bg-emerald-100 text-emerald-700 border-emerald-200'
+    in_progress: 'bg-blue-900/40 text-blue-400 border-blue-200',
+    review: 'bg-amber-900/40 text-amber-400 border-amber-200',
+    done: 'bg-emerald-900/40 text-emerald-400 border-emerald-200'
 }
 const PRIORITY_COLORS = {
     low: 'bg-sand-50 text-navy-500',
-    medium: 'bg-blue-50 text-blue-600',
-    high: 'bg-orange-50 text-orange-600',
-    urgent: 'bg-red-100 text-red-700'
+    medium: 'bg-blue-900/30 text-blue-400',
+    high: 'bg-orange-900/30 text-orange-400',
+    urgent: 'bg-red-900/40 text-red-400'
 }
 
 export default function Tickets() {
@@ -95,16 +95,16 @@ export default function Tickets() {
             {dashboard && (
                 <div className="space-y-3">
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <StatCard label="Total" value={dashboard.total_tickets} color="bg-white" />
+                        <StatCard label="Total" value={dashboard.total_tickets} color="bg-sand-100" />
                         <StatCard label="To Do" value={dashboard.by_status.todo} color="bg-sand-50" />
-                        <StatCard label="In Progress" value={dashboard.by_status.in_progress} color="bg-blue-50" />
-                        <StatCard label="Done" value={dashboard.by_status.done} color="bg-emerald-50" />
+                        <StatCard label="In Progress" value={dashboard.by_status.in_progress} color="bg-blue-900/30" />
+                        <StatCard label="Done" value={dashboard.by_status.done} color="bg-emerald-900/30" />
                     </div>
 
                     {/* Workload per member */}
                     {dashboard.by_member.length > 0 && (
-                        <div className="bg-white rounded-xl border border-sand-200 p-4">
-                            <h3 className="text-sm font-semibold text-navy-700 mb-3">Team Workload</h3>
+                        <div className="bg-sand-100 rounded-xl border border-sand-200 p-4">
+                            <h3 className="text-sm font-semibold text-navy-600 mb-3">Team Workload</h3>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                                 {dashboard.by_member.map((m, i) => (
                                     <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-sand-50">
@@ -112,12 +112,12 @@ export default function Tickets() {
                                             {m.name.charAt(0)}
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-sm font-medium text-navy-700 truncate">{m.name}</p>
+                                            <p className="text-sm font-medium text-navy-600 truncate">{m.name}</p>
                                             <div className="flex gap-1.5 mt-0.5">
                                                 {m.todo > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded bg-sand-100 text-navy-500">{m.todo} todo</span>}
-                                                {m.in_progress > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-100 text-blue-600">{m.in_progress} active</span>}
-                                                {m.review > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-600">{m.review} review</span>}
-                                                {m.done > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-600">{m.done} done</span>}
+                                                {m.in_progress > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-400">{m.in_progress} active</span>}
+                                                {m.review > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-900/40 text-amber-400">{m.review} review</span>}
+                                                {m.done > 0 && <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-900/40 text-emerald-400">{m.done} done</span>}
                                             </div>
                                         </div>
                                         <span className="text-sm font-semibold text-navy-600">{m.total}</span>
@@ -131,26 +131,26 @@ export default function Tickets() {
 
             {/* Create Ticket Form */}
             {showForm && (
-                <form onSubmit={handleCreate} className="bg-white rounded-xl border border-sand-200 p-5 space-y-3">
-                    <h3 className="text-sm font-semibold text-navy-700">New Ticket</h3>
+                <form onSubmit={handleCreate} className="bg-sand-100 rounded-xl border border-sand-200 p-5 space-y-3">
+                    <h3 className="text-sm font-semibold text-navy-600">New Ticket</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="sm:col-span-2">
                             <label className="block text-xs font-medium text-navy-600 mb-1">Title *</label>
                             <input value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))}
-                                placeholder="e.g. Edit episode 45 video" className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                                placeholder="e.g. Edit episode 45 video" className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400" />
                         </div>
                         <div className="sm:col-span-2">
                             <label className="block text-xs font-medium text-navy-600 mb-1">Description</label>
                             <textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                                 rows={2} placeholder="Details about the work..."
-                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none" />
+                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none" />
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-navy-600 mb-1">Category</label>
                             <input value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
                                 placeholder="e.g. Editing, Thumbnail, Script"
                                 list="cat-suggestions"
-                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400" />
                             <datalist id="cat-suggestions">
                                 <option value="Editing" />
                                 <option value="Thumbnail" />
@@ -164,7 +164,7 @@ export default function Tickets() {
                         <div>
                             <label className="block text-xs font-medium text-navy-600 mb-1">Priority</label>
                             <select value={form.priority} onChange={e => setForm(f => ({ ...f, priority: e.target.value }))}
-                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white">
+                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400">
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
                                 <option value="high">High</option>
@@ -174,7 +174,7 @@ export default function Tickets() {
                         <div>
                             <label className="block text-xs font-medium text-navy-600 mb-1">Assign To</label>
                             <select value={form.assigned_to} onChange={e => setForm(f => ({ ...f, assigned_to: e.target.value }))}
-                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white">
+                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400">
                                 <option value="">Unassigned</option>
                                 {team.map(m => <option key={m.id} value={m.id}>{m.name} ({m.role})</option>)}
                             </select>
@@ -182,10 +182,10 @@ export default function Tickets() {
                         <div>
                             <label className="block text-xs font-medium text-navy-600 mb-1">Due Date</label>
                             <input type="date" value={form.due_date} onChange={e => setForm(f => ({ ...f, due_date: e.target.value }))}
-                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400" />
                         </div>
                     </div>
-                    {error && <p className="text-sm text-red-600">{error}</p>}
+                    {error && <p className="text-sm text-red-400">{error}</p>}
                     <div className="flex gap-2">
                         <button type="submit" className="px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors">
                             Create Ticket
@@ -202,12 +202,12 @@ export default function Tickets() {
             <div className="flex flex-wrap gap-2 items-center">
                 <span className="text-xs text-navy-500">Filter:</span>
                 <select value={filter.assigned_to} onChange={e => setFilter(f => ({ ...f, assigned_to: e.target.value }))}
-                    className="text-xs px-2 py-1 border border-sand-300 rounded-md bg-white focus:outline-none">
+                    className="text-xs px-2 py-1 border border-sand-300 rounded-md bg-sand-100 focus:outline-none">
                     <option value="">All Members</option>
                     {team.map(m => <option key={m.id} value={m.id}>{m.name}</option>)}
                 </select>
                 <select value={filter.priority} onChange={e => setFilter(f => ({ ...f, priority: e.target.value }))}
-                    className="text-xs px-2 py-1 border border-sand-300 rounded-md bg-white focus:outline-none">
+                    className="text-xs px-2 py-1 border border-sand-300 rounded-md bg-sand-100 focus:outline-none">
                     <option value="">All Priorities</option>
                     <option value="urgent">Urgent</option>
                     <option value="high">High</option>
@@ -216,14 +216,14 @@ export default function Tickets() {
                 </select>
                 {categories.length > 0 && (
                     <select value={filter.category} onChange={e => setFilter(f => ({ ...f, category: e.target.value }))}
-                        className="text-xs px-2 py-1 border border-sand-300 rounded-md bg-white focus:outline-none">
+                        className="text-xs px-2 py-1 border border-sand-300 rounded-md bg-sand-100 focus:outline-none">
                         <option value="">All Categories</option>
                         {categories.map(c => <option key={c} value={c}>{c}</option>)}
                     </select>
                 )}
                 {(filter.assigned_to || filter.priority || filter.category) && (
                     <button onClick={() => setFilter({ assigned_to: '', priority: '', category: '' })}
-                        className="text-xs text-red-500 hover:text-red-700">✕ Clear</button>
+                        className="text-xs text-red-500 hover:text-red-400">✕ Clear</button>
                 )}
             </div>
 
@@ -262,7 +262,7 @@ function StatCard({ label, value, color }) {
     return (
         <div className={`${color} rounded-xl border border-sand-200 p-3`}>
             <p className="text-[11px] uppercase tracking-wide text-navy-400">{label}</p>
-            <p className="text-xl font-bold text-navy-800 mt-0.5">{value}</p>
+            <p className="text-xl font-bold text-navy-900 mt-0.5">{value}</p>
         </div>
     )
 }
@@ -273,9 +273,9 @@ function TicketCard({ ticket, statuses, moveStatus, onDelete }) {
     const currentIdx = statuses.indexOf(t.status)
 
     return (
-        <div className={`bg-white rounded-lg border ${isOverdue ? 'border-red-300' : 'border-sand-200'} p-3 space-y-2 group`}>
+        <div className={`bg-sand-100 rounded-lg border ${isOverdue ? 'border-red-300' : 'border-sand-200'} p-3 space-y-2 group`}>
             <div className="flex items-start justify-between gap-1">
-                <h4 className="text-sm font-medium text-navy-800 leading-snug">{t.title}</h4>
+                <h4 className="text-sm font-medium text-navy-900 leading-snug">{t.title}</h4>
                 <span className={`text-[10px] px-1.5 py-0.5 rounded-full flex-shrink-0 font-medium ${PRIORITY_COLORS[t.priority]}`}>
                     {t.priority}
                 </span>
@@ -283,13 +283,13 @@ function TicketCard({ ticket, statuses, moveStatus, onDelete }) {
             {t.description && <p className="text-xs text-navy-500 line-clamp-2">{t.description}</p>}
             <div className="flex items-center gap-1.5 flex-wrap">
                 {t.category && t.category !== 'General' && (
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-violet-50 text-violet-600">{t.category}</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-violet-900/30 text-violet-400">{t.category}</span>
                 )}
                 {t.assignee && (
                     <span className="text-[10px] px-1.5 py-0.5 rounded bg-teal-50 text-teal-700">👤 {t.assignee.name}</span>
                 )}
                 {t.due_date && (
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${isOverdue ? 'bg-red-100 text-red-700' : 'bg-sand-50 text-navy-500'}`}>
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${isOverdue ? 'bg-red-900/40 text-red-400' : 'bg-sand-50 text-navy-500'}`}>
                         📅 {t.due_date}
                     </span>
                 )}
@@ -309,7 +309,7 @@ function TicketCard({ ticket, statuses, moveStatus, onDelete }) {
                     </button>
                 )}
                 <button onClick={() => onDelete(t.id)}
-                    className="text-[10px] px-1.5 py-0.5 rounded bg-red-50 text-red-500 hover:bg-red-100 ml-auto">✕</button>
+                    className="text-[10px] px-1.5 py-0.5 rounded bg-red-900/30 text-red-500 hover:bg-red-900/40 ml-auto">✕</button>
             </div>
         </div>
     )

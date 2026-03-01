@@ -179,11 +179,31 @@ Return ONLY valid JSON:
   return parsed || { error: 'parse_failed', raw: text };
 }
 
-// 7. Creator AI — analyze past content style and generate video script, captions, hashtags
+// 7. Creator AI — use Gemini + Google Search grounding to research the creator/topic,
+//    then generate a video script, captions, and hashtags in their style.
 async function creatorAnalysis(context) {
-  const model = getModel();
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-  // Build past content context string
+  // Step 1: Use Gemini with Google Search grounding to research the creator / topic
+  let webResearch = '';
+  try {
+    const searchModel = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash',
+      tools: [{ googleSearchRetrieval: {} }]
+    });
+
+    const searchQuery = context.profileUrl
+      ? `Research this content creator profile and summarize their recent content style, popular videos, tone, and audience engagement: ${context.profileUrl}`
+      : `Research the topic "${context.videoTitle}" for a ${context.platform || 'YouTube'} video. Find trending angles, popular creators covering this topic, and what resonates with audiences. ${context.videoDescription ? 'Context: ' + context.videoDescription : ''}`;
+
+    const searchResult = await searchModel.generateContent(searchQuery);
+    webResearch = searchResult.response.text();
+  } catch (searchErr) {
+    console.warn('Google Search grounding failed (continuing without web data):', searchErr.message);
+    webResearch = 'Web search unavailable — using general knowledge only.';
+  }
+
+  // Step 2: Build past content context from DB posts (if any)
   let pastContentBlock = 'No previous content found — use general best practices.';
   if (context.pastContent && context.pastContent.length > 0) {
     pastContentBlock = context.pastContent.map((p, i) =>
@@ -191,26 +211,30 @@ async function creatorAnalysis(context) {
     ).join('\n');
   }
 
+  // Step 3: Generate the full script using web research + past content context
+  const model = getModel();
   const result = await model.generateContent(`You are an expert content strategist for video creators. Your job is to:
-1. Analyze the creator's PAST CONTENT to understand their unique style, tone, vocabulary, and content patterns
-2. Based on that style analysis, generate a video script, captions, and hashtags for their NEW video idea
+1. Use the WEB RESEARCH below to understand current trends, the creator's public style, and what performs well
+2. Use the PAST CONTENT below (if any) to match the creator's voice
+3. Generate a complete video script, captions, and hashtags for their NEW video idea
 
-=== CREATOR'S PAST CONTENT (analyze this for their style) ===
+=== WEB RESEARCH (real-time data from Google Search) ===
+${webResearch}
+
+=== CREATOR'S PAST CONTENT (from database) ===
 ${pastContentBlock}
 
 === NEW VIDEO IDEA ===
 - Video Title: ${context.videoTitle}
 - Video Description/Concept: ${context.videoDescription}
 - Target Platform: ${context.platform || 'YouTube'}
+${context.profileUrl ? '- Creator Profile: ' + context.profileUrl : ''}
 
 === INSTRUCTIONS ===
-Carefully analyze the past content above. Look for patterns in:
-- Tone (casual, professional, humorous, educational)
-- Vocabulary and phrases they commonly use
-- Content structure and format preferences
-- How they engage their audience
-
-Then create a script and captions that MATCH this creator's existing style. The output should feel like the creator wrote it themselves.
+Combine the web research insights with the past content patterns to create a script that:
+- Matches the creator's existing style and tone
+- Incorporates trending angles and current information from web research
+- Feels authentic, as if the creator wrote it themselves
 
 Return ONLY valid JSON in this exact format:
 {

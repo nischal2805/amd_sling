@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { getTeam, createTeamMember, updateTeamMember, deleteTeamMember } from '../api/client'
 
 const ROLE_COLORS = {
-    Editor: 'bg-blue-100 text-blue-700 border-blue-200',
-    'Thumbnail Designer': 'bg-pink-100 text-pink-700 border-pink-200',
-    'Content Writer': 'bg-amber-100 text-amber-700 border-amber-200',
-    Scriptwriter: 'bg-violet-100 text-violet-700 border-violet-200',
-    Manager: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-    'Video Editor': 'bg-cyan-100 text-cyan-700 border-cyan-200',
+    Editor: 'bg-blue-900/40 text-blue-400 border-blue-200',
+    'Thumbnail Designer': 'bg-pink-900/40 text-pink-400 border-pink-200',
+    'Content Writer': 'bg-amber-900/40 text-amber-400 border-amber-200',
+    Scriptwriter: 'bg-violet-900/40 text-violet-400 border-violet-200',
+    Manager: 'bg-emerald-900/40 text-emerald-400 border-emerald-200',
+    'Video Editor': 'bg-cyan-900/40 text-cyan-700 border-cyan-200',
 }
 
 function roleColor(role) {
@@ -100,25 +100,25 @@ export default function Team() {
 
             {/* Add/Edit Form */}
             {showForm && (
-                <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-sand-200 p-5 space-y-3">
-                    <h3 className="text-sm font-semibold text-navy-700">{editId ? 'Edit Member' : 'Add Team Member'}</h3>
+                <form onSubmit={handleSubmit} className="bg-sand-100 rounded-xl border border-sand-200 p-5 space-y-3">
+                    <h3 className="text-sm font-semibold text-navy-600">{editId ? 'Edit Member' : 'Add Team Member'}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                             <label className="block text-xs font-medium text-navy-600 mb-1">Name *</label>
                             <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                                placeholder="John Doe" className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                                placeholder="John Doe" className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400" />
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-navy-600 mb-1">Email</label>
                             <input value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-                                placeholder="john@example.com" className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                                placeholder="john@example.com" className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400" />
                         </div>
                         <div>
                             <label className="block text-xs font-medium text-navy-600 mb-1">Role / Designation *</label>
                             <input value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))}
                                 placeholder="e.g. Editor, Thumbnail Designer"
                                 list="role-suggestions"
-                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400" />
+                                className="w-full px-3 py-2 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400" />
                             <datalist id="role-suggestions">
                                 <option value="Editor" />
                                 <option value="Video Editor" />
@@ -131,7 +131,7 @@ export default function Team() {
                             </datalist>
                         </div>
                     </div>
-                    {error && <p className="text-sm text-red-600">{error}</p>}
+                    {error && <p className="text-sm text-red-400">{error}</p>}
                     <div className="flex gap-2">
                         <button type="submit" className="px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors">
                             {editId ? 'Save Changes' : 'Add Member'}
@@ -148,20 +148,20 @@ export default function Team() {
             {loading ? (
                 <p className="text-sm text-navy-400">Loading team...</p>
             ) : members.length === 0 ? (
-                <div className="bg-white rounded-xl border border-sand-200 p-8 text-center">
+                <div className="bg-sand-100 rounded-xl border border-sand-200 p-8 text-center">
                     <p className="text-navy-500 text-sm">No team members yet. Add your first team member to start assigning work!</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {members.map(m => (
-                        <div key={m.id} className={`bg-white rounded-xl border border-sand-200 p-4 transition-all ${m.status === 'inactive' ? 'opacity-50' : ''}`}>
+                        <div key={m.id} className={`bg-sand-100 rounded-xl border border-sand-200 p-4 transition-all ${m.status === 'inactive' ? 'opacity-50' : ''}`}>
                             <div className="flex items-start justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-9 h-9 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-sm font-semibold">
                                         {m.name.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
-                                        <h3 className="text-sm font-semibold text-navy-800">{m.name}</h3>
+                                        <h3 className="text-sm font-semibold text-navy-900">{m.name}</h3>
                                         {m.email && <p className="text-[11px] text-navy-400">{m.email}</p>}
                                     </div>
                                 </div>
@@ -179,7 +179,7 @@ export default function Team() {
                                     {m.status === 'active' ? 'Deactivate' : 'Activate'}
                                 </button>
                                 <button onClick={() => handleDelete(m.id)}
-                                    className="text-xs px-2 py-1 rounded bg-red-50 text-red-500 hover:bg-red-100 transition-colors">
+                                    className="text-xs px-2 py-1 rounded bg-red-900/30 text-red-500 hover:bg-red-900/40 transition-colors">
                                     Remove
                                 </button>
                             </div>

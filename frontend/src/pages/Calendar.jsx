@@ -6,9 +6,9 @@ import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSa
 const STATUS_COLORS = {
   draft: 'bg-sand-100 text-navy-600 border-sand-300',
   scheduled: 'bg-teal-50 text-teal-700 border-teal-200',
-  publishing: 'bg-amber-50 text-amber-700 border-amber-200',
+  publishing: 'bg-amber-900/30 text-amber-400 border-amber-200',
   published: 'bg-cyan-50 text-cyan-600 border-cyan-200',
-  failed: 'bg-red-50 text-red-700 border-red-200',
+  failed: 'bg-red-900/30 text-red-400 border-red-200',
 }
 
 function buildCalendarDays(month) {
@@ -52,7 +52,7 @@ export default function Calendar() {
     <div className="p-6 max-w-5xl">
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-navy-800">Content Calendar</h1>
+          <h1 className="text-xl font-semibold text-navy-900">Content Calendar</h1>
           <p className="text-sm text-navy-400 mt-0.5">Scheduled and published posts</p>
         </div>
         <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export default function Calendar() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Calendar grid */}
-        <div className="lg:col-span-2 bg-white border border-sand-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="lg:col-span-2 bg-sand-100 border border-sand-200 rounded-lg shadow-sm overflow-hidden">
           <div className="grid grid-cols-7 border-b border-sand-100">
             {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => (
               <div key={d} className="text-center text-xs text-navy-400 py-2 font-medium">{d}</div>
@@ -108,9 +108,9 @@ export default function Calendar() {
         {/* Side panel */}
         <div className="space-y-3">
           {selected ? (
-            <div className="bg-white border border-sand-200 rounded-lg shadow-sm overflow-hidden">
+            <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm overflow-hidden">
               <div className="px-4 py-3 border-b border-sand-100 bg-sand-50">
-                <h3 className="text-sm font-medium text-navy-800">{format(selected, 'EEEE, MMMM d')}</h3>
+                <h3 className="text-sm font-medium text-navy-900">{format(selected, 'EEEE, MMMM d')}</h3>
                 <p className="text-xs text-navy-300">{selectedDayPosts.length} post{selectedDayPosts.length !== 1 ? 's' : ''}</p>
               </div>
               <div className="divide-y divide-sand-50">
@@ -120,11 +120,11 @@ export default function Calendar() {
                   <div key={post.id} className="px-4 py-3">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-navy-800 font-medium truncate">{post.title || 'Untitled'}</p>
+                        <p className="text-sm text-navy-900 font-medium truncate">{post.title || 'Untitled'}</p>
                         {post.body && <p className="text-xs text-navy-400 mt-0.5 line-clamp-2">{post.body.slice(0, 80)}</p>}
                         <div className="flex items-center gap-2 mt-1.5">
                           <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                            { draft: 'bg-sand-100 text-navy-600', scheduled: 'bg-teal-100 text-teal-700', publishing: 'bg-amber-100 text-amber-700', published: 'bg-cyan-100 text-cyan-600', failed: 'bg-red-100 text-red-700' }[post.status]
+                            { draft: 'bg-sand-100 text-navy-600', scheduled: 'bg-teal-100 text-teal-700', publishing: 'bg-amber-900/40 text-amber-400', published: 'bg-cyan-900/40 text-cyan-600', failed: 'bg-red-900/40 text-red-400' }[post.status]
                           }`}>{post.status}</span>
                           {post.platforms && post.platforms.length > 0 && (
                             <span className="text-xs text-navy-300">{post.platforms.map(p => p.platform).join(', ')}</span>
@@ -143,7 +143,7 @@ export default function Calendar() {
                       )}
                       <button
                         onClick={() => { if (confirm('Delete this post?')) deleteMutation.mutate(post.id) }}
-                        className="text-xs text-navy-300 hover:text-red-500"
+                        className="text-xs text-navy-300 hover:text-red-400"
                       >Delete</button>
                     </div>
                   </div>
@@ -151,13 +151,13 @@ export default function Calendar() {
               </div>
             </div>
           ) : (
-            <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-4">
+            <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-4">
               <p className="text-sm text-navy-300">Click a day to see posts</p>
             </div>
           )}
 
           {/* Legend */}
-          <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-4">
+          <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-4">
             <h4 className="text-xs font-medium text-navy-400 uppercase mb-2">Legend</h4>
             <div className="space-y-1.5">
               {Object.entries({ draft: 'Draft', scheduled: 'Scheduled', publishing: 'Publishing', published: 'Published', failed: 'Failed' }).map(([k, v]) => (
@@ -170,9 +170,9 @@ export default function Calendar() {
           </div>
 
           {/* Upcoming */}
-          <div className="bg-white border border-sand-200 rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm overflow-hidden">
             <div className="px-4 py-3 border-b border-sand-100 bg-sand-50">
-              <h4 className="text-sm font-medium text-navy-800">Upcoming</h4>
+              <h4 className="text-sm font-medium text-navy-900">Upcoming</h4>
             </div>
             <div className="divide-y divide-sand-50 max-h-60 overflow-y-auto">
               {posts.filter(p => p.scheduled_at && new Date(p.scheduled_at) >= new Date() && p.status === 'scheduled')
@@ -180,7 +180,7 @@ export default function Calendar() {
                 .slice(0, 8)
                 .map(post => (
                   <div key={post.id} className="px-4 py-2.5">
-                    <p className="text-xs font-medium text-navy-700 truncate">{post.title || 'Untitled'}</p>
+                    <p className="text-xs font-medium text-navy-600 truncate">{post.title || 'Untitled'}</p>
                     <p className="text-xs text-navy-300 mt-0.5">{format(parseISO(post.scheduled_at), 'MMM d, h:mm a')}</p>
                   </div>
                 ))}

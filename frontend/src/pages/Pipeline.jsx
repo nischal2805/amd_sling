@@ -29,28 +29,28 @@ function NewDealModal({ onClose }) {
 
   return (
     <div className="fixed inset-0 bg-navy-900/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md border border-sand-200">
-        <h2 className="text-base font-semibold text-navy-800 mb-4">New Deal</h2>
+      <div className="bg-sand-100 rounded-lg shadow-lg p-6 w-full max-w-md border border-sand-200">
+        <h2 className="text-base font-semibold text-navy-900 mb-4">New Deal</h2>
         <form onSubmit={e => { e.preventDefault(); mutation.mutate(form) }} className="space-y-3">
           <div>
-            <label className="block text-sm text-navy-700 mb-1">Title *</label>
-            <input value={form.title} onChange={set('title')} required className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-teal-500 focus:border-teal-500" />
+            <label className="block text-sm text-navy-600 mb-1">Title *</label>
+            <input value={form.title} onChange={set('title')} required className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm bg-sand-50 text-sand-600 focus:ring-1 focus:ring-teal-500 focus:border-teal-500" />
           </div>
           <div>
-            <label className="block text-sm text-navy-700 mb-1">Brand</label>
-            <input value={form.brand_name} onChange={set('brand_name')} placeholder="Enter brand name" className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm focus:ring-1 focus:ring-teal-500 focus:border-teal-500" />
+            <label className="block text-sm text-navy-600 mb-1">Brand</label>
+            <input value={form.brand_name} onChange={set('brand_name')} placeholder="Enter brand name" className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm bg-sand-50 text-sand-600 focus:ring-1 focus:ring-teal-500 focus:border-teal-500" />
           </div>
           <div>
-            <label className="block text-sm text-navy-700 mb-1">Value (₹)</label>
-            <input type="number" value={form.total_value} onChange={set('total_value')} className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm" />
+            <label className="block text-sm text-navy-600 mb-1">Value (₹)</label>
+            <input type="number" value={form.total_value} onChange={set('total_value')} className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm bg-sand-50 text-sand-600" />
           </div>
           <div>
-            <label className="block text-sm text-navy-700 mb-1">Stage</label>
-            <select value={form.stage} onChange={set('stage')} className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm">
+            <label className="block text-sm text-navy-600 mb-1">Stage</label>
+            <select value={form.stage} onChange={set('stage')} className="w-full border border-sand-200 rounded px-3 py-1.5 text-sm bg-sand-50 text-sand-600">
               {STAGES.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
             </select>
           </div>
-          {mutation.error && <p className="text-red-600 text-sm">{mutation.error.response?.data?.error || 'Error'}</p>}
+          {mutation.error && <p className="text-red-400 text-sm">{mutation.error.response?.data?.error || 'Error'}</p>}
           <div className="flex gap-2 pt-2">
             <button type="button" onClick={onClose} className="flex-1 border border-sand-200 text-navy-600 py-1.5 rounded text-sm hover:bg-sand-50">Cancel</button>
             <button type="submit" disabled={mutation.isPending} className="flex-1 bg-teal-500 text-white py-1.5 rounded text-sm hover:bg-teal-600 disabled:opacity-50">
@@ -91,14 +91,14 @@ export default function Pipeline() {
     <div className="p-6">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h1 className="text-xl font-semibold text-navy-800">Pipeline</h1>
+          <h1 className="text-xl font-semibold text-navy-900">Pipeline</h1>
           <p className="text-sm text-navy-400 mt-0.5">{deals.length} total deals</p>
         </div>
         <div className="flex items-center gap-3">
           <select
             value={brandFilter}
             onChange={e => setBrandFilter(e.target.value)}
-            className="border border-sand-200 rounded px-3 py-1.5 text-sm text-navy-700"
+            className="border border-sand-200 rounded px-3 py-1.5 text-sm text-navy-600 bg-sand-50 text-sand-600"
           >
             <option value="">All brands</option>
             {brands.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
@@ -142,9 +142,9 @@ export default function Pipeline() {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               onClick={() => navigate(`/deals/${deal.id}`)}
-                              className={`bg-white border border-sand-200 rounded-md p-3 shadow-sm cursor-pointer hover:shadow-md transition-shadow ${snapshot.isDragging ? 'shadow-lg rotate-1 border-teal-400' : ''}`}
+                              className={`bg-sand-100 border border-sand-200 rounded-md p-3 shadow-sm cursor-pointer hover:shadow-md transition-shadow ${snapshot.isDragging ? 'shadow-lg rotate-1 border-teal-400' : ''}`}
                             >
-                              <p className="text-sm font-medium text-navy-800 line-clamp-2">{deal.title}</p>
+                              <p className="text-sm font-medium text-navy-900 line-clamp-2">{deal.title}</p>
                               {deal.brand && <p className="text-xs text-navy-400 mt-1">{deal.brand.name}</p>}
                               {deal.total_value && (
                                 <p className="text-sm font-semibold text-teal-600 mt-2">{fmt(deal.total_value)}</p>

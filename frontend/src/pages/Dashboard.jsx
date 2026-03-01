@@ -11,16 +11,16 @@ const STAGE_LABELS = {
 }
 
 const STAGE_COLORS = {
-  inbound: 'bg-sand-200 text-navy-700',
-  qualified: 'bg-cyan-100 text-cyan-800',
-  negotiation: 'bg-yellow-100 text-yellow-700',
+  inbound: 'bg-sand-200 text-navy-600',
+  qualified: 'bg-cyan-900/40 text-cyan-800',
+  negotiation: 'bg-yellow-900/40 text-yellow-400',
   contract_sent: 'bg-teal-100 text-teal-700',
-  in_production: 'bg-orange-100 text-orange-700',
+  in_production: 'bg-orange-900/40 text-orange-400',
   client_review: 'bg-cyan-50 text-teal-700',
   posted: 'bg-teal-50 text-teal-700',
-  invoice_sent: 'bg-navy-100 text-navy-700',
-  paid: 'bg-green-100 text-green-700',
-  declined: 'bg-red-100 text-red-700'
+  invoice_sent: 'bg-navy-100 text-navy-600',
+  paid: 'bg-green-900/40 text-green-400',
+  declined: 'bg-red-900/40 text-red-400'
 }
 
 function fmt(n) {
@@ -29,9 +29,9 @@ function fmt(n) {
 
 function StatCard({ label, value, sub, highlight }) {
   return (
-    <div className="bg-white border border-sand-200 rounded-lg p-5 shadow-sm">
+    <div className="bg-sand-100 border border-sand-200 rounded-lg p-5 shadow-sm">
       <p className="text-sm text-navy-400">{label}</p>
-      <p className={`text-2xl font-semibold mt-1 ${highlight || 'text-navy-800'}`}>{value}</p>
+      <p className={`text-2xl font-semibold mt-1 ${highlight || 'text-navy-900'}`}>{value}</p>
       {sub && <p className="text-xs text-navy-300 mt-1">{sub}</p>}
     </div>
   )
@@ -73,7 +73,7 @@ export default function Dashboard() {
   return (
     <div className="p-6 max-w-6xl">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-navy-800">Dashboard</h1>
+        <h1 className="text-xl font-semibold text-navy-900">Dashboard</h1>
         <p className="text-sm text-navy-400 mt-0.5">Your creator business at a glance</p>
       </div>
 
@@ -93,14 +93,14 @@ export default function Dashboard() {
           label="Outstanding invoices"
           value={fmt(invoices.outstanding_value)}
           sub={invoices.overdue_count > 0 ? `${invoices.overdue_count} overdue` : `${invoices.outstanding_count || 0} outstanding`}
-          highlight={invoices.overdue_count > 0 ? 'text-red-600' : undefined}
+          highlight={invoices.overdue_count > 0 ? 'text-red-400' : undefined}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {/* Revenue chart */}
-        <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-5">
-          <h2 className="text-sm font-medium text-navy-800 mb-4">Revenue by month</h2>
+        <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-5">
+          <h2 className="text-sm font-medium text-navy-900 mb-4">Revenue by month</h2>
           {chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={chartData} barSize={28}>
@@ -117,14 +117,14 @@ export default function Dashboard() {
         </div>
 
         {/* Top brands */}
-        <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-5">
-          <h2 className="text-sm font-medium text-navy-800 mb-4">Top brands by revenue</h2>
+        <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-5">
+          <h2 className="text-sm font-medium text-navy-900 mb-4">Top brands by revenue</h2>
           {topBrands.length > 0 ? (
             <div className="space-y-2.5">
               {topBrands.map(b => (
                 <div key={b.name} className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-navy-800">{b.name}</p>
+                    <p className="text-sm text-navy-900">{b.name}</p>
                     <p className="text-xs text-navy-300">{b.deal_count} deal{b.deal_count !== 1 ? 's' : ''}</p>
                   </div>
                   <span className="text-sm font-medium text-teal-600">{fmt(b.total_revenue)}</span>
@@ -138,9 +138,9 @@ export default function Dashboard() {
       </div>
 
       {/* Recent deals */}
-      <div className="bg-white border border-sand-200 rounded-lg shadow-sm">
+      <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm">
         <div className="px-5 py-4 border-b border-sand-200 flex items-center justify-between">
-          <h2 className="text-sm font-medium text-navy-800">Recent deals</h2>
+          <h2 className="text-sm font-medium text-navy-900">Recent deals</h2>
           <Link to="/pipeline" className="text-xs text-teal-600 hover:underline">View all →</Link>
         </div>
         <table className="w-full">
@@ -156,10 +156,10 @@ export default function Dashboard() {
             {recentDeals.map(deal => (
               <tr key={deal.id} className="hover:bg-sand-50 transition-colors">
                 <td className="px-5 py-3">
-                  <Link to={`/deals/${deal.id}`} className="text-sm text-navy-800 hover:text-teal-600">{deal.title}</Link>
+                  <Link to={`/deals/${deal.id}`} className="text-sm text-navy-900 hover:text-teal-600">{deal.title}</Link>
                 </td>
                 <td className="px-4 py-3 text-sm text-navy-500">{deal.brand?.name || '—'}</td>
-                <td className="px-4 py-3 text-sm text-navy-800">{deal.total_value ? fmt(deal.total_value) : '—'}</td>
+                <td className="px-4 py-3 text-sm text-navy-900">{deal.total_value ? fmt(deal.total_value) : '—'}</td>
                 <td className="px-4 py-3">
                   <span className={`inline-flex text-xs px-2 py-0.5 rounded-full font-medium ${STAGE_COLORS[deal.stage] || 'bg-sand-100 text-navy-600'}`}>
                     {STAGE_LABELS[deal.stage] || deal.stage}

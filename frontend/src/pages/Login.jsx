@@ -33,11 +33,11 @@ export default function Login() {
   }
 
   async function demoLogin() {
-    setForm({ email: 'demo@creatoros.com', password: 'demo1234', full_name: '' })
+    setForm({ email: 'demo@buzzstack.in', password: 'demo1234', full_name: '' })
     setLoading(true)
     setError('')
     try {
-      const res = await login({ email: 'demo@creatoros.com', password: 'demo1234' })
+      const res = await login({ email: 'demo@buzzstack.in', password: 'demo1234' })
       localStorage.setItem('token', res.token)
       navigate('/dashboard')
     } catch (err) {
@@ -55,17 +55,17 @@ export default function Login() {
           <p className="text-teal-300 text-sm mt-1">Sponsorship CRM for creators</p>
         </div>
 
-        <div className="bg-white border border-sand-200 rounded-lg shadow-lg p-6">
+        <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-lg p-6">
           <div className="flex border border-sand-200 rounded-md mb-6 p-0.5 bg-sand-50">
             <button
               onClick={() => setMode('login')}
-              className={`flex-1 py-1.5 text-sm rounded transition-colors ${mode === 'login' ? 'bg-white shadow-sm text-navy-800 font-medium' : 'text-navy-400'}`}
+              className={`flex-1 py-1.5 text-sm rounded transition-colors ${mode === 'login' ? 'bg-sand-100 shadow-sm text-navy-900 font-medium' : 'text-navy-400'}`}
             >
               Sign in
             </button>
             <button
               onClick={() => setMode('register')}
-              className={`flex-1 py-1.5 text-sm rounded transition-colors ${mode === 'register' ? 'bg-white shadow-sm text-navy-800 font-medium' : 'text-navy-400'}`}
+              className={`flex-1 py-1.5 text-sm rounded transition-colors ${mode === 'register' ? 'bg-sand-100 shadow-sm text-navy-900 font-medium' : 'text-navy-400'}`}
             >
               Register
             </button>
@@ -74,38 +74,38 @@ export default function Login() {
           <form onSubmit={submit} className="space-y-4">
             {mode === 'register' && (
               <div>
-                <label className="block text-sm text-navy-700 mb-1">Full name</label>
+                <label className="block text-sm text-navy-200 mb-1">Full name</label>
                 <input
                   type="text"
                   value={form.full_name}
                   onChange={set('full_name')}
                   required
-                  className="w-full border border-sand-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
+                  className="w-full border border-sand-200 rounded-md px-3 py-2 text-sm bg-sand-50 text-sand-600 placeholder-sand-400 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
                 />
               </div>
             )}
             <div>
-              <label className="block text-sm text-navy-700 mb-1">Email</label>
+              <label className="block text-sm text-navy-200 mb-1">Email</label>
               <input
                 type="email"
                 value={form.email}
                 onChange={set('email')}
                 required
-                className="w-full border border-sand-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-sand-200 rounded-md px-3 py-2 text-sm bg-sand-50 text-sand-600 placeholder-sand-400 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
               />
             </div>
             <div>
-              <label className="block text-sm text-navy-700 mb-1">Password</label>
+              <label className="block text-sm text-navy-200 mb-1">Password</label>
               <input
                 type="password"
                 value={form.password}
                 onChange={set('password')}
                 required
-                className="w-full border border-sand-200 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
+                className="w-full border border-sand-200 rounded-md px-3 py-2 text-sm bg-sand-50 text-sand-600 placeholder-sand-400 focus:outline-none focus:ring-1 focus:ring-teal-500 focus:border-teal-500"
               />
             </div>
 
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-red-400">{error}</p>}
 
             <button
               type="submit"
@@ -120,7 +120,7 @@ export default function Login() {
             <button
               onClick={demoLogin}
               disabled={loading}
-              className="w-full border border-navy-200 text-navy-700 py-2 rounded-md text-sm hover:bg-sand-50 disabled:opacity-50 transition-colors"
+              className="w-full border border-navy-200 text-navy-600 py-2 rounded-md text-sm hover:bg-sand-50 disabled:opacity-50 transition-colors"
             >
               Use demo account
             </button>

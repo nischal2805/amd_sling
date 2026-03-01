@@ -42,7 +42,7 @@ export default function CreatorAI() {
             </div>
 
             {/* Input Form */}
-            <form onSubmit={handleGenerate} className="bg-white rounded-xl border border-sand-200 p-6 space-y-4">
+            <form onSubmit={handleGenerate} className="bg-sand-100 rounded-xl border border-sand-200 p-6 space-y-4">
                 {/* Profile URL — prominent */}
                 <div className="bg-gradient-to-r from-teal-50 to-cyan-50 rounded-lg border border-teal-200 p-4">
                     <label className="block text-sm font-medium text-teal-800 mb-1">🔗 Your Creator Profile URL</label>
@@ -51,7 +51,7 @@ export default function CreatorAI() {
                         value={form.profile_url}
                         onChange={e => setForm(f => ({ ...f, profile_url: e.target.value }))}
                         placeholder="https://www.youtube.com/@yourchannel  or  https://www.instagram.com/yourprofile"
-                        className="w-full px-3 py-2.5 border border-teal-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
+                        className="w-full px-3 py-2.5 border border-teal-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 bg-sand-100"
                     />
                     <p className="text-xs text-teal-600 mt-1.5">
                         We'll scrape your last 3 videos/posts to analyze your content style. YouTube works best.
@@ -59,34 +59,34 @@ export default function CreatorAI() {
                 </div>
 
                 <div className="border-t border-sand-200 pt-4">
-                    <h3 className="text-sm font-semibold text-navy-700 mb-3">Your Next Video Idea</h3>
+                    <h3 className="text-sm font-semibold text-navy-600 mb-3">Your Next Video Idea</h3>
                     <div className="space-y-3">
                         <div>
-                            <label className="block text-sm font-medium text-navy-700 mb-1">Video Title *</label>
+                            <label className="block text-sm font-medium text-navy-600 mb-1">Video Title *</label>
                             <input
                                 type="text"
                                 value={form.video_title}
                                 onChange={e => setForm(f => ({ ...f, video_title: e.target.value }))}
                                 placeholder="e.g. 5 Productivity Hacks That Changed My Life"
-                                className="w-full px-3 py-2.5 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+                                className="w-full px-3 py-2.5 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400"
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-navy-700 mb-1">What do you want to cover?</label>
+                            <label className="block text-sm font-medium text-navy-600 mb-1">What do you want to cover?</label>
                             <textarea
                                 value={form.video_description}
                                 onChange={e => setForm(f => ({ ...f, video_description: e.target.value }))}
                                 rows={3}
                                 placeholder="Describe what you want to talk about, key points, specific things to include..."
-                                className="w-full px-3 py-2.5 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none"
+                                className="w-full px-3 py-2.5 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400 resize-none"
                             />
                         </div>
                         <div className="max-w-xs">
-                            <label className="block text-sm font-medium text-navy-700 mb-1">Target Platform</label>
+                            <label className="block text-sm font-medium text-navy-600 mb-1">Target Platform</label>
                             <select
                                 value={form.platform}
                                 onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}
-                                className="w-full px-3 py-2.5 border border-sand-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 bg-white"
+                                className="w-full px-3 py-2.5 border border-sand-300 rounded-lg text-sm bg-sand-50 text-sand-600 focus:outline-none focus:ring-2 focus:ring-teal-400"
                             >
                                 <option>YouTube</option>
                                 <option>Instagram</option>
@@ -98,7 +98,7 @@ export default function CreatorAI() {
                     </div>
                 </div>
 
-                {error && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">{error}</p>}
+                {error && <p className="text-sm text-red-400 bg-red-900/30 border border-red-200 rounded-lg p-3">{error}</p>}
                 <button
                     type="submit"
                     disabled={loading}
@@ -143,27 +143,27 @@ export default function CreatorAI() {
                     {result.script && (
                         <Section title="📝 Video Script" color="indigo">
                             <div className="space-y-3">
-                                <ScriptBlock label="🪝 Hook" text={result.script.hook} bg="bg-red-50 border-red-200 text-red-800" copy={copy} copied={copied} />
-                                <ScriptBlock label="📣 Intro" text={result.script.intro} bg="bg-amber-50 border-amber-200 text-amber-800" copy={copy} copied={copied} />
+                                <ScriptBlock label="🪝 Hook" text={result.script.hook} bg="bg-red-900/30 border-red-200 text-red-400" copy={copy} copied={copied} />
+                                <ScriptBlock label="📣 Intro" text={result.script.intro} bg="bg-amber-900/30 border-amber-200 text-amber-400" copy={copy} copied={copied} />
 
                                 {result.script.sections?.map((section, i) => (
-                                    <div key={i} className="bg-white rounded-lg border border-sand-200 p-4">
-                                        <h4 className="font-semibold text-navy-800 text-sm mb-2">Section {i + 1}: {section.heading}</h4>
+                                    <div key={i} className="bg-sand-100 rounded-lg border border-sand-200 p-4">
+                                        <h4 className="font-semibold text-navy-900 text-sm mb-2">Section {i + 1}: {section.heading}</h4>
                                         <div className="space-y-2">
-                                            <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
-                                                <p className="text-[11px] font-semibold text-blue-600 mb-0.5">🎤 Talking Points</p>
-                                                <p className="text-xs text-blue-800 leading-relaxed whitespace-pre-line">{section.talking_points}</p>
+                                            <div className="bg-blue-900/30 border border-blue-200 rounded-md p-3">
+                                                <p className="text-[11px] font-semibold text-blue-400 mb-0.5">🎤 Talking Points</p>
+                                                <p className="text-xs text-blue-400 leading-relaxed whitespace-pre-line">{section.talking_points}</p>
                                             </div>
-                                            <div className="bg-violet-50 border border-violet-200 rounded-md p-3">
-                                                <p className="text-[11px] font-semibold text-violet-600 mb-0.5">🎬 Visual Notes</p>
+                                            <div className="bg-violet-900/30 border border-violet-200 rounded-md p-3">
+                                                <p className="text-[11px] font-semibold text-violet-400 mb-0.5">🎬 Visual Notes</p>
                                                 <p className="text-xs text-violet-800 leading-relaxed">{section.visual_notes}</p>
                                             </div>
                                         </div>
                                     </div>
                                 ))}
 
-                                <ScriptBlock label="📣 Call to Action" text={result.script.cta} bg="bg-green-50 border-green-200 text-green-800" copy={copy} copied={copied} />
-                                <ScriptBlock label="👋 Outro" text={result.script.outro} bg="bg-navy-50 border-navy-200 text-navy-800" copy={copy} copied={copied} />
+                                <ScriptBlock label="📣 Call to Action" text={result.script.cta} bg="bg-green-900/30 border-green-200 text-green-400" copy={copy} copied={copied} />
+                                <ScriptBlock label="👋 Outro" text={result.script.outro} bg="bg-navy-50 border-navy-200 text-navy-900" copy={copy} copied={copied} />
 
                                 {result.script.estimated_duration && (
                                     <p className="text-xs text-navy-400">⏱ Estimated duration: {result.script.estimated_duration}</p>
@@ -188,9 +188,9 @@ export default function CreatorAI() {
                     {result.hashtags && (
                         <Section title="# Hashtags" color="rose">
                             <div className="space-y-3">
-                                <HashtagGroup label="Primary" tags={result.hashtags.primary} color="bg-rose-50 text-rose-700 border-rose-200" copy={copy} copied={copied} />
-                                <HashtagGroup label="Reach" tags={result.hashtags.secondary} color="bg-orange-50 text-orange-700 border-orange-200" copy={copy} copied={copied} />
-                                <HashtagGroup label="Niche" tags={result.hashtags.niche} color="bg-violet-50 text-violet-700 border-violet-200" copy={copy} copied={copied} />
+                                <HashtagGroup label="Primary" tags={result.hashtags.primary} color="bg-rose-900/30 text-rose-400 border-rose-200" copy={copy} copied={copied} />
+                                <HashtagGroup label="Reach" tags={result.hashtags.secondary} color="bg-orange-900/30 text-orange-400 border-orange-200" copy={copy} copied={copied} />
+                                <HashtagGroup label="Niche" tags={result.hashtags.niche} color="bg-violet-900/30 text-violet-400 border-violet-200" copy={copy} copied={copied} />
                                 <button
                                     onClick={() => copy([...(result.hashtags.primary || []), ...(result.hashtags.secondary || []), ...(result.hashtags.niche || [])].join(' '), 'all-hashtags')}
                                     className="text-xs px-3 py-1.5 rounded-md bg-sand-100 text-navy-600 hover:bg-sand-200 transition-colors"
@@ -204,7 +204,7 @@ export default function CreatorAI() {
                     {/* Thumbnail */}
                     {result.thumbnail_suggestion && (
                         <Section title="🖼️ Thumbnail Idea" color="violet">
-                            <p className="text-sm text-navy-700 leading-relaxed">{result.thumbnail_suggestion}</p>
+                            <p className="text-sm text-navy-600 leading-relaxed">{result.thumbnail_suggestion}</p>
                         </Section>
                     )}
                 </div>
@@ -219,7 +219,7 @@ function Section({ title, color, children }) {
     const borders = { teal: 'border-teal-300', indigo: 'border-indigo-300', amber: 'border-amber-300', rose: 'border-rose-300', violet: 'border-violet-300' }
     return (
         <div className={`bg-sand-50 rounded-xl border ${borders[color] || 'border-sand-200'} p-5`}>
-            <h3 className="text-base font-semibold text-navy-800 mb-3">{title}</h3>
+            <h3 className="text-base font-semibold text-navy-900 mb-3">{title}</h3>
             {children}
         </div>
     )
@@ -227,9 +227,9 @@ function Section({ title, color, children }) {
 
 function InfoCard({ label, value }) {
     return (
-        <div className="bg-white rounded-lg border border-sand-200 p-3">
+        <div className="bg-sand-100 rounded-lg border border-sand-200 p-3">
             <p className="text-[11px] uppercase tracking-wide text-navy-400 mb-0.5">{label}</p>
-            <p className="text-sm text-navy-700">{value || '—'}</p>
+            <p className="text-sm text-navy-600">{value || '—'}</p>
         </div>
     )
 }
@@ -253,9 +253,9 @@ function ScriptBlock({ label, text, bg, copy, copied }) {
 function CaptionCard({ label, text, icon, copy, copied }) {
     const id = `caption-${label.replace(/\s/g, '-').toLowerCase()}`
     return (
-        <div className="bg-white rounded-lg border border-sand-200 p-4 group">
+        <div className="bg-sand-100 rounded-lg border border-sand-200 p-4 group">
             <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-medium text-navy-700">{icon} {label}</h4>
+                <h4 className="text-sm font-medium text-navy-600">{icon} {label}</h4>
                 <button onClick={() => copy(text, id)}
                     className="text-xs px-2 py-0.5 rounded bg-sand-100 text-navy-500 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-sand-200">
                     {copied === id ? '✓ Copied!' : 'Copy'}

@@ -19,13 +19,13 @@ function PlatformCard({ platform, connection, gmailStatus, onConnect, onDisconne
     : connection?.platform_username || connection?.platform_email || connection?.platform_user_id
 
   return (
-    <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-5">
+    <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-5">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
           <span className="text-2xl">{platform.icon}</span>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold text-navy-800">{platform.label}</h3>
+              <h3 className="text-sm font-semibold text-navy-900">{platform.label}</h3>
               {isConnected ? (
                 <span className="inline-flex items-center gap-1 text-xs text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-500 inline-block"></span>
@@ -57,7 +57,7 @@ function PlatformCard({ platform, connection, gmailStatus, onConnect, onDisconne
           {isConnected ? (
             <button
               onClick={() => { if (confirm(`Disconnect ${platform.label}?`)) onDisconnect() }}
-              className="text-xs text-red-500 border border-red-200 px-3 py-1.5 rounded hover:bg-red-50"
+              className="text-xs text-red-500 border border-red-200 px-3 py-1.5 rounded hover:bg-red-900/30"
             >
               Disconnect
             </button>
@@ -124,7 +124,7 @@ export default function Connections() {
   return (
     <div className="p-6 max-w-3xl">
       <div className="mb-5">
-        <h1 className="text-xl font-semibold text-navy-800">Connections</h1>
+        <h1 className="text-xl font-semibold text-navy-900">Connections</h1>
         <p className="text-sm text-navy-400 mt-0.5">Connect your social accounts and email</p>
       </div>
 
@@ -145,9 +145,9 @@ export default function Connections() {
 
       {/* Scan results */}
       {scanResults && (
-        <div className="mt-5 bg-white border border-sand-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="mt-5 bg-sand-100 border border-sand-200 rounded-lg shadow-sm overflow-hidden">
           <div className="px-5 py-3 border-b border-sand-100 bg-sand-50 flex items-center justify-between">
-            <h2 className="text-sm font-medium text-navy-800">Scan results — {scanResults.sponsorships?.length || 0} potential deals found</h2>
+            <h2 className="text-sm font-medium text-navy-900">Scan results — {scanResults.sponsorships?.length || 0} potential deals found</h2>
             <button onClick={() => setScanResults(null)} className="text-navy-300 hover:text-navy-500 text-lg leading-none">&times;</button>
           </div>
           {(!scanResults.sponsorships || scanResults.sponsorships.length === 0) ? (
@@ -158,7 +158,7 @@ export default function Connections() {
                 <div key={i} className="px-5 py-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-navy-800">{item.subject || item.brand_name || 'Unknown'}</p>
+                      <p className="text-sm font-medium text-navy-900">{item.subject || item.brand_name || 'Unknown'}</p>
                       <p className="text-xs text-navy-400 mt-0.5">From: {item.from || item.sender || '—'}</p>
                       {item.parsed && (
                         <div className="mt-2 space-y-1">
@@ -181,14 +181,14 @@ export default function Connections() {
       )}
 
       {scanError && (
-        <div className="mt-4 bg-red-50 border border-red-200 rounded px-4 py-3 text-sm text-red-700">
+        <div className="mt-4 bg-red-900/30 border border-red-200 rounded px-4 py-3 text-sm text-red-400">
           {scanError}
         </div>
       )}
 
       {/* Info box */}
       <div className="mt-5 bg-cyan-50 border border-cyan-200 rounded-lg p-4">
-        <h4 className="text-sm font-medium text-navy-700 mb-1">How connections work</h4>
+        <h4 className="text-sm font-medium text-navy-600 mb-1">How connections work</h4>
         <ul className="text-xs text-navy-500 space-y-1 list-disc list-inside">
           <li>Connecting Gmail lets BuzzStack scan for sponsorship inquiries and auto-populate the pipeline</li>
           <li>Connecting YouTube, Instagram, LinkedIn, or Twitter lets you publish content directly from Compose</li>

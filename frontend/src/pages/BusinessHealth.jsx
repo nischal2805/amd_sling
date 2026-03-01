@@ -19,7 +19,7 @@ function ScoreRing({ value, size = 120, label, color }) {
           className="transition-all duration-1000 ease-out" />
       </svg>
       <div className="absolute flex flex-col items-center justify-center" style={{ width: size, height: size }}>
-        <span className="text-2xl font-bold text-navy-800">{value}</span>
+        <span className="text-2xl font-bold text-navy-900">{value}</span>
         <span className="text-xs text-navy-400">/ 100</span>
       </div>
       {label && <span className="text-xs text-navy-500 font-medium">{label}</span>}
@@ -38,7 +38,7 @@ function MetricBar({ label, value, max = 100, inverted = false }) {
     <div>
       <div className="flex justify-between items-center mb-1.5">
         <span className="text-sm text-navy-600">{label}</span>
-        <span className="text-sm font-semibold text-navy-800">{value}%</span>
+        <span className="text-sm font-semibold text-navy-900">{value}%</span>
       </div>
       <div className="h-2.5 bg-sand-100 rounded-full overflow-hidden">
         <div className={`h-full rounded-full transition-all duration-700 ease-out ${color}`} style={{ width: `${pct}%` }} />
@@ -49,8 +49,8 @@ function MetricBar({ label, value, max = 100, inverted = false }) {
 
 function AlertBadge({ type, message }) {
   const styles = {
-    danger: 'bg-red-50 border-red-200 text-red-800',
-    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+    danger: 'bg-red-900/30 border-red-200 text-red-400',
+    warning: 'bg-yellow-900/30 border-yellow-200 text-yellow-400',
     info: 'bg-cyan-50 border-cyan-200 text-cyan-700'
   }
   const icons = { danger: '🔴', warning: '🟡', info: '🔵' }
@@ -87,7 +87,7 @@ export default function BusinessHealth() {
   return (
     <div className="p-6 max-w-6xl">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-navy-800">Business Health</h1>
+        <h1 className="text-xl font-semibold text-navy-900">Business Health</h1>
         <p className="text-sm text-navy-400 mt-0.5">Your creator business risk assessment & insights</p>
       </div>
 
@@ -101,7 +101,7 @@ export default function BusinessHealth() {
       {/* Overall score + key metrics */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
         {/* Big score ring */}
-        <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-6 flex flex-col items-center justify-center relative">
+        <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-6 flex flex-col items-center justify-center relative">
           <p className="text-xs text-navy-400 mb-3 font-medium uppercase tracking-wide">Overall Health</p>
           <ScoreRing value={d.overall_score || 0} size={140} />
           <p className="text-xs text-navy-300 mt-3">
@@ -111,8 +111,8 @@ export default function BusinessHealth() {
         </div>
 
         {/* Metrics breakdown */}
-        <div className="lg:col-span-3 bg-white border border-sand-200 rounded-lg shadow-sm p-6">
-          <h2 className="text-sm font-medium text-navy-800 mb-5">Health Breakdown</h2>
+        <div className="lg:col-span-3 bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-6">
+          <h2 className="text-sm font-medium text-navy-900 mb-5">Health Breakdown</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             <MetricBar label="Revenue Diversification" value={100 - metrics.concentration_risk} />
             <MetricBar label="Brand Diversity" value={metrics.brand_diversity} />
@@ -126,8 +126,8 @@ export default function BusinessHealth() {
 
       {/* Cash flow overview */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-6">
-          <h2 className="text-sm font-medium text-navy-800 mb-4">Cash Flow Snapshot</h2>
+        <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-6">
+          <h2 className="text-sm font-medium text-navy-900 mb-4">Cash Flow Snapshot</h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between py-2 border-b border-sand-100">
               <div>
@@ -155,40 +155,40 @@ export default function BusinessHealth() {
                 <p className="text-sm text-navy-600">Avg Monthly Revenue</p>
                 <p className="text-xs text-navy-300">Based on recorded entries</p>
               </div>
-              <span className="text-lg font-semibold text-navy-800">{fmt(cashFlow.avg_monthly_revenue)}</span>
+              <span className="text-lg font-semibold text-navy-900">{fmt(cashFlow.avg_monthly_revenue)}</span>
             </div>
           </div>
         </div>
 
         {/* Business summary */}
-        <div className="bg-white border border-sand-200 rounded-lg shadow-sm p-6">
-          <h2 className="text-sm font-medium text-navy-800 mb-4">Business Summary</h2>
+        <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm p-6">
+          <h2 className="text-sm font-medium text-navy-900 mb-4">Business Summary</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-sand-50 rounded-lg p-3.5">
               <p className="text-xs text-navy-400">Total Revenue</p>
-              <p className="text-lg font-bold text-navy-800 mt-1">{fmt(summary.total_revenue)}</p>
+              <p className="text-lg font-bold text-navy-900 mt-1">{fmt(summary.total_revenue)}</p>
             </div>
             <div className="bg-sand-50 rounded-lg p-3.5">
               <p className="text-xs text-navy-400">Win Rate</p>
-              <p className="text-lg font-bold text-navy-800 mt-1">{summary.win_rate || 0}%</p>
+              <p className="text-lg font-bold text-navy-900 mt-1">{summary.win_rate || 0}%</p>
             </div>
             <div className="bg-sand-50 rounded-lg p-3.5">
               <p className="text-xs text-navy-400">Total Deals</p>
-              <p className="text-lg font-bold text-navy-800 mt-1">{summary.total_deals || 0}</p>
+              <p className="text-lg font-bold text-navy-900 mt-1">{summary.total_deals || 0}</p>
               <p className="text-xs text-navy-300">{summary.active_deals || 0} active</p>
             </div>
             <div className="bg-sand-50 rounded-lg p-3.5">
               <p className="text-xs text-navy-400">Brand Partners</p>
-              <p className="text-lg font-bold text-navy-800 mt-1">{summary.total_brands || 0}</p>
+              <p className="text-lg font-bold text-navy-900 mt-1">{summary.total_brands || 0}</p>
               <p className="text-xs text-navy-300">{summary.active_brands || 0} active</p>
             </div>
             <div className="bg-sand-50 rounded-lg p-3.5">
               <p className="text-xs text-navy-400">Total Invoiced</p>
-              <p className="text-lg font-bold text-navy-800 mt-1">{fmt(summary.total_invoiced)}</p>
+              <p className="text-lg font-bold text-navy-900 mt-1">{fmt(summary.total_invoiced)}</p>
             </div>
             <div className="bg-sand-50 rounded-lg p-3.5">
               <p className="text-xs text-navy-400">Overdue Invoices</p>
-              <p className={`text-lg font-bold mt-1 ${summary.overdue_count > 0 ? 'text-red-600' : 'text-navy-800'}`}>
+              <p className={`text-lg font-bold mt-1 ${summary.overdue_count > 0 ? 'text-red-400' : 'text-navy-900'}`}>
                 {summary.overdue_count || 0}
               </p>
             </div>
@@ -198,9 +198,9 @@ export default function BusinessHealth() {
 
       {/* Brand renewal tracker */}
       {renewals.length > 0 && (
-        <div className="bg-white border border-sand-200 rounded-lg shadow-sm overflow-hidden">
+        <div className="bg-sand-100 border border-sand-200 rounded-lg shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-sand-200 bg-gradient-to-r from-teal-500/5 to-transparent">
-            <h2 className="text-sm font-medium text-navy-800">🔄 Brand Renewal Opportunities</h2>
+            <h2 className="text-sm font-medium text-navy-900">🔄 Brand Renewal Opportunities</h2>
             <p className="text-xs text-navy-400 mt-0.5">Brands you've worked with that may be ready for a new collaboration</p>
           </div>
           <table className="w-full">
@@ -217,13 +217,13 @@ export default function BusinessHealth() {
               {renewals.map(r => (
                 <tr key={r.id} className="hover:bg-sand-50">
                   <td className="px-5 py-3">
-                    <Link to="/brands" className="text-sm text-navy-800 hover:text-teal-600 font-medium">{r.name}</Link>
+                    <Link to="/brands" className="text-sm text-navy-900 hover:text-teal-600 font-medium">{r.name}</Link>
                   </td>
                   <td className="px-4 py-3 text-sm text-navy-500">
                     {new Date(r.last_collab).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`text-sm font-medium ${r.days_since > 120 ? 'text-red-600' : 'text-yellow-600'}`}>
+                    <span className={`text-sm font-medium ${r.days_since > 120 ? 'text-red-400' : 'text-yellow-600'}`}>
                       {r.days_since}d ago
                     </span>
                   </td>
@@ -235,7 +235,7 @@ export default function BusinessHealth() {
                       <span className="text-xs text-navy-400">{r.warmth}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm font-medium text-navy-700">{fmt(r.total_revenue)}</td>
+                  <td className="px-4 py-3 text-sm font-medium text-navy-600">{fmt(r.total_revenue)}</td>
                 </tr>
               ))}
             </tbody>
