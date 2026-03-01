@@ -23,7 +23,13 @@ const Deliverable = sequelize.define('Deliverable', {
   },
   deadline: DataTypes.DATEONLY,
   requirements: DataTypes.TEXT,
-  notes: DataTypes.TEXT
+  notes: DataTypes.TEXT,
+  locked: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  locked_at: DataTypes.DATE,
+  locked_by: DataTypes.STRING(100)
 }, {
   tableName: 'deliverables',
   underscored: true

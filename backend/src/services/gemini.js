@@ -1,18 +1,27 @@
-const Anthropic = require('@anthropic-ai/sdk');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-function getClient() {
-  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+function getModel() {
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  return genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+}
+
+function extractJSON(text) {
+  try {
+    return JSON.parse(text.replace(/```json\n?|\n?```/g, '').trim());
+  } catch {
+    // Try to find JSON object in text
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      try { return JSON.parse(match[0]); } catch {}
+    }
+    return null;
+  }
 }
 
 // 1. Parse sponsorship email → structured deal data
 async function parseEmailForDeal(emailText) {
-  const client = getClient();
-  const response = await client.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 1000,
-    messages: [{
-      role: 'user',
-      content: `You are a sponsorship deal parser for content creators. Extract structured deal information from this email.
+  const model = getModel();
+  const result = await model.generateContent(`You are a sponsorship deal parser for content creators. Extract structured deal information from this email.
 
 Return ONLY valid JSON in this exact format:
 {
@@ -34,27 +43,17 @@ Return ONLY valid JSON in this exact format:
 }
 
 Email:
-${emailText}`
-    }]
-  });
+${emailText}`);
 
-  const text = response.content[0].text;
-  try {
-    return JSON.parse(text.replace(/```json\n?|\n?```/g, '').trim());
-  } catch {
-    return { is_sponsorship: false, confidence: 0, error: 'parse_failed', raw: text };
-  }
+  const text = result.response.text();
+  const parsed = extractJSON(text);
+  return parsed || { is_sponsorship: false, confidence: 0, error: 'parse_failed', raw: text };
 }
 
 // 2. Suggest rate for a deal
 async function suggestRate(context) {
-  const client = getClient();
-  const response = await client.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 800,
-    messages: [{
-      role: 'user',
-      content: `You are a sponsorship rate advisor for content creators. Based on the creator's profile, suggest a fair rate range.
+  const model = getModel();
+  const result = await model.generateContent(`You are a sponsorship rate advisor for content creators. Based on the creator's profile, suggest a fair rate range.
 
 Creator context:
 - Niche: ${context.niche || 'general'}
@@ -69,30 +68,20 @@ Return ONLY valid JSON:
   "low_estimate": number,
   "mid_estimate": number,
   "high_estimate": number,
-  "currency": "USD",
+  "currency": "INR",
   "reasoning": string (2-3 sentences explaining the estimate),
   "negotiation_tips": [string, string]
-}`
-    }]
-  });
+}`);
 
-  const text = response.content[0].text;
-  try {
-    return JSON.parse(text.replace(/```json\n?|\n?```/g, '').trim());
-  } catch {
-    return { error: 'parse_failed', raw: text };
-  }
+  const text = result.response.text();
+  const parsed = extractJSON(text);
+  return parsed || { error: 'parse_failed', raw: text };
 }
 
 // 3. Draft a response email
 async function draftResponse(context) {
-  const client = getClient();
-  const response = await client.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 800,
-    messages: [{
-      role: 'user',
-      content: `You are a professional email writer for a content creator. Draft a reply email.
+  const model = getModel();
+  const result = await model.generateContent(`You are a professional email writer for a content creator. Draft a reply email.
 
 Context:
 - Creator name: ${context.creatorName}
@@ -102,22 +91,15 @@ Context:
 - Creator wants to: ${context.userAction}
 - Original email snippet: ${context.originalEmailSnippet || 'N/A'}
 
-Write a professional, friendly email reply. Keep it concise (under 200 words). Do not include a subject line. Start directly with the greeting.`
-    }]
-  });
+Write a professional, friendly email reply. Keep it concise (under 200 words). Do not include a subject line. Start directly with the greeting.`);
 
-  return { draft: response.content[0].text };
+  return { draft: result.response.text() };
 }
 
 // 4. Basic content repurposing
 async function repurposeContent(context) {
-  const client = getClient();
-  const response = await client.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 1200,
-    messages: [{
-      role: 'user',
-      content: `You are a content repurposing expert for creators. Adapt this content for a different platform.
+  const model = getModel();
+  const result = await model.generateContent(`You are a content repurposing expert for creators. Adapt this content for a different platform.
 
 Source platform: ${context.sourcePlatform}
 Target platform: ${context.targetPlatform}
@@ -126,22 +108,15 @@ Content type: ${context.contentType}
 Original content:
 ${context.sourceContent}
 
-Rewrite this content optimized for ${context.targetPlatform}. Include appropriate formatting, hashtags, and tone for that platform. Be practical and specific.`
-    }]
-  });
+Rewrite this content optimized for ${context.targetPlatform}. Include appropriate formatting, hashtags, and tone for that platform. Be practical and specific.`);
 
-  return { repurposed: response.content[0].text };
+  return { repurposed: result.response.text() };
 }
 
 // 5. Generate content brief from deal context
 async function generateBrief(context) {
-  const client = getClient();
-  const response = await client.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 1500,
-    messages: [{
-      role: 'user',
-      content: `You are a content strategist for creators. Generate a detailed content brief for a brand sponsorship deliverable.
+  const model = getModel();
+  const result = await model.generateContent(`You are a content strategist for creators. Generate a detailed content brief for a brand sponsorship deliverable.
 
 Deal context:
 - Brand: ${context.brandName}
@@ -164,27 +139,17 @@ Generate a comprehensive content brief. Return ONLY valid JSON:
   "hashtags": [string, string, string, string, string] (5 relevant hashtags),
   "estimated_production_time": string (e.g. "2-3 days"),
   "notes": string (any additional tips)
-}`
-    }]
-  });
+}`);
 
-  const text = response.content[0].text;
-  try {
-    return JSON.parse(text.replace(/```json\n?|\n?```/g, '').trim());
-  } catch {
-    return { error: 'parse_failed', raw: text };
-  }
+  const text = result.response.text();
+  const parsed = extractJSON(text);
+  return parsed || { error: 'parse_failed', raw: text };
 }
 
 // 6. Negotiation coaching based on brand history
 async function negotiationCoach(context) {
-  const client = getClient();
-  const response = await client.messages.create({
-    model: 'claude-opus-4-5',
-    max_tokens: 1000,
-    messages: [{
-      role: 'user',
-      content: `You are a negotiation coach for content creators dealing with brands. Based on this brand's history, give strategic advice.
+  const model = getModel();
+  const result = await model.generateContent(`You are a negotiation coach for content creators dealing with brands. Based on this brand's history, give strategic advice.
 
 Brand: ${context.brandName}
 Brand history:
@@ -207,16 +172,11 @@ Return ONLY valid JSON:
   "strategy": string (2-3 sentence negotiation approach),
   "payment_terms_suggestion": string (e.g. "50% upfront, 50% on delivery"),
   "walk_away_threshold": string (minimum acceptable deal)
-}`
-    }]
-  });
+}`);
 
-  const text = response.content[0].text;
-  try {
-    return JSON.parse(text.replace(/```json\n?|\n?```/g, '').trim());
-  } catch {
-    return { error: 'parse_failed', raw: text };
-  }
+  const text = result.response.text();
+  const parsed = extractJSON(text);
+  return parsed || { error: 'parse_failed', raw: text };
 }
 
 module.exports = { parseEmailForDeal, suggestRate, draftResponse, repurposeContent, generateBrief, negotiationCoach };

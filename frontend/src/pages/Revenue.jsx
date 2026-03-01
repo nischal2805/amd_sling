@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getRevenue, createRevenue, deleteRevenue, getRevenueSummary, getBrands } from '../api/client'
+import { getRevenue, createRevenue, deleteRevenue, getRevenueSummary, getBrands, getRevenueForecast } from '../api/client'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { useState } from 'react'
 
@@ -81,6 +81,7 @@ export default function Revenue() {
   const { data: entries = [], isLoading } = useQuery({ queryKey: ['revenue'], queryFn: () => getRevenue() })
   const { data: summary } = useQuery({ queryKey: ['revenue-summary'], queryFn: () => getRevenueSummary() })
   const { data: brands = [] } = useQuery({ queryKey: ['brands'], queryFn: getBrands })
+  const { data: forecast } = useQuery({ queryKey: ['revenue-forecast'], queryFn: getRevenueForecast })
 
   const deleteMutation = useMutation({
     mutationFn: deleteRevenue,
@@ -149,6 +150,29 @@ export default function Revenue() {
           </div>
         </div>
       </div>
+
+      {/* Forecast card */}
+      {forecast && (
+        <div className="bg-gradient-to-r from-navy-800 to-navy-700 border border-navy-600 rounded-lg shadow-sm p-5 mb-5 text-white">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs text-navy-200 uppercase tracking-wide font-medium">📈 Next Month Forecast</p>
+              <p className="text-2xl font-bold mt-1">{fmt(forecast.forecast_next_month)}</p>
+              <p className="text-xs text-navy-300 mt-1">Based on last {forecast.based_on_months?.length || 0} months average</p>
+            </div>
+            {forecast.monthly_values?.length > 0 && (
+              <div className="flex items-end gap-1.5 h-12">
+                {forecast.monthly_values.map((v, i) => {
+                  const max = Math.max(...forecast.monthly_values, 1)
+                  const h = Math.max(4, (v / max) * 48)
+                  return <div key={i} className="w-5 bg-teal-400/60 rounded-t" style={{ height: h }} title={`₹${v.toLocaleString()}`} />
+                })}
+                <div className="w-5 bg-cyan-400 rounded-t border-2 border-dashed border-cyan-300" style={{ height: Math.max(4, (forecast.forecast_next_month / Math.max(...forecast.monthly_values, 1)) * 48) }} title={`Forecast: ₹${forecast.forecast_next_month?.toLocaleString()}`} />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Entries table */}
       <div className="bg-white border border-sand-200 rounded-lg shadow-sm overflow-hidden">

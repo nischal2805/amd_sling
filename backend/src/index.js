@@ -13,6 +13,7 @@ const gmailRoutes = require('./routes/gmail');
 const connectionRoutes = require('./routes/connections');
 const postRoutes = require('./routes/posts');
 const aiRoutes = require('./routes/ai');
+const negotiationRoutes = require('./routes/negotiations');
 
 const { sequelize } = require('./models');
 const { startScheduler } = require('./jobs/publishScheduler');
@@ -39,6 +40,7 @@ app.use('/api/gmail', gmailRoutes);
 app.use('/api/connections', connectionRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/negotiations', negotiationRoutes);
 
 // Health check
 app.get('/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));

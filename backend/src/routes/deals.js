@@ -210,9 +210,50 @@ router.patch('/:dealId/deliverables/:id/status', auth, async (req, res, next) =>
     const deliverable = await Deliverable.findOne({ where: { id: req.params.id, deal_id: req.params.dealId } });
     if (!deliverable) return res.status(404).json({ error: 'Deliverable not found' });
 
+    if (deliverable.locked) return res.status(403).json({ error: 'Deliverable is locked — unlock first to modify' });
+
     const { status } = req.body;
     await deliverable.update({ status });
     res.json(deliverable);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// PATCH /api/deals/:dealId/deliverables/:id/lock — Toggle lock
+router.patch('/:dealId/deliverables/:id/lock', auth, async (req, res, next) => {
+  try {
+    const deal = await Deal.findOne({ where: { id: req.params.dealId, user_id: req.user.id } });
+    if (!deal) return res.status(404).json({ error: 'Deal not found' });
+
+    const deliverable = await Deliverable.findOne({ where: { id: req.params.id, deal_id: req.params.dealId } });
+    if (!deliverable) return res.status(404).json({ error: 'Deliverable not found' });
+
+    const lock = !deliverable.locked;
+    await deliverable.update({
+      locked: lock,
+      locked_at: lock ? new Date() : null,
+      locked_by: lock ? (req.user.name || 'user') : null
+    });
+    res.json(deliverable);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/deals/:dealId/lock-all — Lock all deliverables (post contract)
+router.post('/:dealId/lock-all', auth, async (req, res, next) => {
+  try {
+    const deal = await Deal.findOne({ where: { id: req.params.dealId, user_id: req.user.id } });
+    if (!deal) return res.status(404).json({ error: 'Deal not found' });
+
+    await Deliverable.update(
+      { locked: true, locked_at: new Date(), locked_by: req.user.name || 'user' },
+      { where: { deal_id: req.params.dealId, locked: false } }
+    );
+
+    const deliverables = await Deliverable.findAll({ where: { deal_id: req.params.dealId } });
+    res.json(deliverables);
   } catch (err) {
     next(err);
   }

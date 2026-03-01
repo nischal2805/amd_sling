@@ -49,6 +49,8 @@ export const createDeliverable = (dealId, data) => api.post(`/deals/${dealId}/de
 export const updateDeliverable = (dealId, id, data) => api.put(`/deals/${dealId}/deliverables/${id}`, data).then(r => r.data)
 export const deleteDeliverable = (dealId, id) => api.delete(`/deals/${dealId}/deliverables/${id}`).then(r => r.data)
 export const updateDeliverableStatus = (dealId, id, status) => api.patch(`/deals/${dealId}/deliverables/${id}/status`, { status }).then(r => r.data)
+export const toggleDeliverableLock = (dealId, id) => api.patch(`/deals/${dealId}/deliverables/${id}/lock`).then(r => r.data)
+export const lockAllDeliverables = (dealId) => api.post(`/deals/${dealId}/lock-all`).then(r => r.data)
 
 // Revenue
 export const getRevenue = (params) => api.get('/revenue', { params }).then(r => r.data)
@@ -70,12 +72,20 @@ export const getDashboard = () => api.get('/analytics/dashboard').then(r => r.da
 export const getPipelineAnalytics = () => api.get('/analytics/pipeline').then(r => r.data)
 export const getBrandsAnalytics = () => api.get('/analytics/brands').then(r => r.data)
 export const getRevenueAnalytics = () => api.get('/analytics/revenue').then(r => r.data)
+export const getBusinessHealth = () => api.get('/analytics/health').then(r => r.data)
 
 // AI
 export const parseEmail = (data) => api.post('/ai/parse-email', data).then(r => r.data)
 export const suggestRate = (data) => api.post('/ai/suggest-rate', data).then(r => r.data)
 export const draftResponse = (data) => api.post('/ai/draft-response', data).then(r => r.data)
 export const repurposeContent = (data) => api.post('/ai/repurpose', data).then(r => r.data)
+export const generateBrief = (data) => api.post('/ai/generate-brief', data).then(r => r.data)
+export const negotiationCoach = (data) => api.post('/ai/negotiation-coach', data).then(r => r.data)
+
+// Negotiation Notes
+export const getNegotiationNotes = (params) => api.get('/negotiations', { params }).then(r => r.data)
+export const createNegotiationNote = (data) => api.post('/negotiations', data).then(r => r.data)
+export const deleteNegotiationNote = (id) => api.delete(`/negotiations/${id}`).then(r => r.data)
 
 // Posts
 export const getPosts = (params) => api.get('/posts', { params }).then(r => r.data)

@@ -6,6 +6,8 @@ import Pipeline from './pages/Pipeline'
 import DealDetail from './pages/DealDetail'
 import Brands from './pages/Brands'
 import Revenue from './pages/Revenue'
+import Invoices from './pages/Invoices'
+import BusinessHealth from './pages/BusinessHealth'
 import Compose from './pages/Compose'
 import Calendar from './pages/Calendar'
 import Connections from './pages/Connections'
@@ -25,7 +27,9 @@ export default function App() {
         <Route path="pipeline" element={<Pipeline />} />
         <Route path="deals/:id" element={<DealDetail />} />
         <Route path="brands" element={<Brands />} />
+        <Route path="invoices" element={<Invoices />} />
         <Route path="revenue" element={<Revenue />} />
+        <Route path="health" element={<BusinessHealth />} />
         <Route path="compose" element={<Compose />} />
         <Route path="calendar" element={<Calendar />} />
         <Route path="connections" element={<Connections />} />
